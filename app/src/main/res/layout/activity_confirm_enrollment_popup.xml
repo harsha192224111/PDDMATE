@@ -1,0 +1,55 @@
+<!-- res/layout/confirm_enrollment_popup.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="18dp"
+    android:background="@drawable/popup_bg"
+    android:elevation="8dp">
+
+    <!-- Header with Close Icon -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_enrollment_title"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#212121"/>
+
+        <ImageView
+            android:id="@+id/close_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="13dp"
+            android:src="@drawable/ic_close"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/close_popup"/>
+    </RelativeLayout>
+
+    <!-- Body Message -->
+    <TextView
+        android:id="@+id/body_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_enrollment_message"
+        android:textSize="15sp"
+        android:textColor="#2C3E50"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Confirm Button -->
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/confirm"
+        android:backgroundTint="#1877F2"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>

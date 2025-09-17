@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_profile"
+        android:title="Profile" />
+    <item
+        android:id="@+id/menu_verify_progress"
+        android:title="Verify Progress" />
+    <item
+        android:id="@+id/menu_pdd_analytics"
+        android:title="PDD Analytics" />
+    <item
+        android:id="@+id/menu_logout"
+        android:title="Logout" />
+</menu>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7FCFF">
+
+    <!-- Navbar -->
+    <LinearLayout
+        android:id="@+id/navbar"
+        android:orientation="horizontal"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:background="#CCEEFF"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- App Logo -->
+        <ImageView
+            android:id="@+id/logoImageView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/applogo"
+            android:contentDescription="@string/app_logo_desc"
+            android:layout_marginStart="12dp"/>
+
+        <!-- Spacer -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_pdd_mate"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:textColor="#222222"
+            android:gravity="center"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/title_pdd_mate"/>
+
+        <!-- Spacer -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <!-- Hamburger Menu -->
+        <ImageButton
+            android:id="@+id/menuImageButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_menu"
+            android:contentDescription="@string/menu_desc"
+            android:layout_marginEnd="12dp"/>
+    </LinearLayout>
+
+    <!-- Calendar Section -->
+    <LinearLayout
+        android:id="@+id/calendarSection"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/navbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Month & Year Selector with Arrows -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Back Arrow -->
+            <ImageButton
+                android:id="@+id/prevMonthButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_arrow_left"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/prev_month"/>
+
+            <!-- Month & Year (Vertical) -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/monthTextView"
+                    android:layout_width="78dp"
+                    android:layout_height="48dp"
+                    android:text="@string/month_text"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:contentDescription="@string/month_text"/>
+
+                <TextView
+                    android:id="@+id/yearTextView"
+                    android:layout_width="78dp"
+                    android:layout_height="48dp"
+                    android:text="@string/year_text"
+                    android:textSize="16sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:contentDescription="@string/year_text"/>
+            </LinearLayout>
+
+            <!-- Forward Arrow -->
+            <ImageButton
+                android:id="@+id/nextMonthButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_arrow_right"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/next_month"/>
+        </LinearLayout>
+
+        <!-- Weekdays Header -->
+        <LinearLayout
+            android:id="@+id/weekDaysLinearLayout"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal" />
+
+        <!-- Calendar Grid -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/calendarRecyclerView"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:focusable="true"
+            android:contentDescription="@string/calendar_desc"/>
+    </LinearLayout>
+
+    <!-- Notifications Card -->
+    <LinearLayout
+        android:id="@+id/notificationsCard"
+        android:orientation="horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/calendarSection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="18dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="#FFEB8B"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/notificationsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notifications"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#222222"
+            android:contentDescription="@string/notifications"
+            android:layout_gravity="center_vertical"/>
+
+        <!-- Spacer to push bell to right -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/notificationsBell"
+            android:layout_width="48dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_bell"
+            android:contentDescription="@string/bell_icon_desc"
+            android:layout_gravity="end"/>
+    </LinearLayout>
+
+    <!-- Notification Items -->
+    <LinearLayout
+        android:id="@+id/notificationsList"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/notificationsCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E3FFF0"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_accepted"
+                android:contentDescription="@string/accepted_icon"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ui_ux_accepted"
+                android:textSize="15sp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@string/ui_ux_accepted"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFECEC"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_rejected"
+                android:contentDescription="@string/rejected_icon"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/backend_rejected"
+                android:textSize="15sp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@string/backend_rejected"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

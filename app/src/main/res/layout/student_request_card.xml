@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="54dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingEnd="8dp"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_student"
+        android:contentDescription="@string/student"
+        android:layout_marginEnd="15dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/studentNameReq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/student_name_req_1"
+            android:textColor="#303030"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/studentEmailReq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/student_roll_req_1"
+            android:textColor="#303030"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="0" />
+
+    <ImageView
+        android:id="@+id/icAccept"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/ic_accept"
+        android:layout_marginStart="78dp"
+        android:contentDescription="@string/approve" />
+
+    <ImageView
+        android:id="@+id/icReject"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/ic_reject"
+        android:contentDescription="@string/reject"
+        android:layout_marginStart="75dp" />
+</LinearLayout>
+
+

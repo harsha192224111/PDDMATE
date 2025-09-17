@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- Top bar -->
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_arrow_back"
+        android:contentDescription="@string/back_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/idea_selection"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/title"
+        app:layout_constraintStart_toEndOf="@id/backArrow"
+        app:layout_constraintTop_toTopOf="@id/backArrow"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"/>
+
+    <!-- Phase Deadline Row as Single TextView with compound drawable -->
+    <TextView
+        android:id="@+id/deadlineText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/phase_deadline"
+        android:textSize="15sp"
+        android:textColor="@color/subtitle"
+        android:drawableStart="@drawable/ic_clock"
+        android:drawablePadding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="32dp"/>
+
+    <!-- Project Title Label -->
+    <TextView
+        android:id="@+id/projectTitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/project_title"
+        android:textSize="15sp"
+        android:textColor="@color/title"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/deadlineText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp" />
+
+    <!-- Project Title EditText -->
+    <EditText
+        android:id="@+id/projectTitleInput"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:minHeight="48dp"
+        android:hint="@string/project_title_hint"
+        android:background="@drawable/bg_edittext"
+        android:textColor="@color/title"
+        android:textColorHint="@color/subtitle"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textSize="15sp"
+        android:inputType="textCapSentences"
+        android:autofillHints="name"
+        app:layout_constraintTop_toBottomOf="@id/projectTitleLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="8dp" />
+
+    <!-- Project Desc Label -->
+    <TextView
+        android:id="@+id/projectDescLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/project_desc"
+        android:textSize="15sp"
+        android:textColor="@color/title"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/projectTitleInput"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp" />
+
+    <!-- Project Desc EditText -->
+    <EditText
+        android:id="@+id/projectDescInput"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:minHeight="72dp"
+        android:hint="@string/project_desc_hint"
+        android:background="@drawable/bg_edittext"
+        android:textColor="@color/title"
+        android:textColorHint="@color/subtitle"
+        android:padding="12dp"
+        android:textSize="15sp"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
+        android:autofillHints="description"
+        app:layout_constraintTop_toBottomOf="@id/projectDescLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="8dp" />
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:minHeight="48dp"
+        android:text="@string/submit_review"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/blue"
+        app:cornerRadius="8dp"
+        app:layout_constraintTop_toBottomOf="@id/projectDescInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="24dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

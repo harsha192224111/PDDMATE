@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="16dp">
+
+    <!-- Back Arrow -->
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_arrow_back"
+        android:contentDescription="@string/back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/slot_details"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:textColor="#222222"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/backArrow"
+        android:layout_marginStart="16dp" />
+
+    <!-- Slot Info Group -->
+    <LinearLayout
+        android:id="@+id/slotInfoGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/slotTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pdd01_title"
+            android:textSize="16sp"
+            android:textColor="#222222"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_app_dev"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/slotTypeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_development"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="5dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/slotsLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/slots_left"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:layout_marginBottom="5dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/mentorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mentor_name"
+            android:textSize="17sp"
+            android:textColor="#333333"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
+
+    <!-- Students Label -->
+    <TextView
+        android:id="@+id/studentsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/students"
+        android:textSize="15sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/slotInfoGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="14dp" />
+
+    <!-- Student List: holds inflated student_card.xml views dynamically -->
+    <LinearLayout
+        android:id="@+id/studentList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/studentsLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="2dp" />
+
+    <!-- Student Requests Label -->
+    <TextView
+        android:id="@+id/requestLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/student_requests"
+        android:textSize="15sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/studentList"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="18dp" />
+
+    <!-- Requests Table Header -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/studentRequestHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/requestLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="2dp">
+
+        <View
+            android:id="@+id/header_icon_spacer"
+            android:layout_width="51dp"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/headerApprove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/approve"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="#222222"
+            app:layout_constraintStart_toEndOf="@id/header_icon_spacer"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="150dp" />
+
+        <TextView
+            android:id="@+id/headerReject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reject"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="#222222"
+            app:layout_constraintStart_toEndOf="@id/headerApprove"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="60dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Student Requests List: holds inflated student_request_card.xml views dynamically -->
+    <LinearLayout
+        android:id="@+id/requestList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/studentRequestHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="2dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

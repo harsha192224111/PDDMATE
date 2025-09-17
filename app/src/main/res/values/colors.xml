@@ -1,0 +1,101 @@
+<resources>
+
+    <color name="accentBlue">#0066FF</color>
+    <color name="greyLabel">#666666</color>
+    <color name="background_light">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="red">#FF453A</color>
+    <color name="gray_dark">#666666</color>
+    <color name="card_bg">#F6F7FA</color>
+    <color name="ff3b30">#FF3B30</color>
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="errorRed">#FF3B30</color>
+    <color name="grayText">#888888</color>
+    <color name="gray">#E0E0E0</color>
+    <color name="blue">#007BFF</color>
+
+    <color name="background">#FFFFFF</color>
+    <color name="password_card_bg">#E8EAED</color>
+    <color name="primary_text">#212121</color>
+    <color name="button_bg">#007BFF</color>
+    <color name="button_text">#FFFFFF</color>
+    <color name="logout_red">#FF3B30</color>
+    <color name="cancel_gray">#E0E0E0</color>
+    <color name="primary">#007BFF</color>
+
+
+    <color name="textPrimary">#000000</color>
+    <color name="textSecondary">#666666</color>
+    <color name="primaryBlue">#007BFF</color>
+    <color name="cardBackground">#FFFFFF</color>
+    <color name="slotBackground">#E5E5E5</color>
+
+
+    <color name="colorPrimary">#0077FF</color>
+    <color name="colorPrimaryDark">#005FCC</color>
+    <color name="colorAccent">#0077FF</color>
+    <color name="otpBoxBg">#F2F2F7</color>
+    <color name="editTextBg">@android:color/darker_gray</color>
+    <color name="greyText">#8E8E93</color>
+    <color name="selected_button_bg">#198CFF</color>
+
+
+    <color name="file_icon">#1C4264</color>
+    <color name="upload_icon">#208BFF</color>
+    <color name="upload_box_bg">#E6F1FE</color>
+    <color name="file_item_bg">#F5F5F5</color>
+
+
+    <color name="title">#222222</color>
+    <color name="subtitle">#757575</color>
+    <color name="progress">#00897B</color>
+    <color name="line">#DDDDDD</color>
+
+
+    <color name="icon_tint">#208BFF</color>
+    <!-- Base colors -->
+
+    <!-- Timeline line -->
+    <color name="line_gray">#BDBDBD</color>
+
+    <!-- Status colors (optional for icons/text if you want to reflect status) -->
+    <color name="status_completed">#4CAF50</color> <!-- Green -->
+    <color name="status_pending">#FFC107</color>   <!-- Amber/Yellow -->
+    <color name="status_failed">#F44336</color>    <!-- Red -->
+
+
+    <color name="card">#F3F9FF</color>
+    <color name="field_bg">#F3F3F3</color>
+
+    <color name="button_green">#2CB045</color>
+    <color name="button_red">#ED4848</color>
+    <color name="button_yellow">#FFC54D</color>
+    <color name="disabled_gray">#CCCCCC</color>
+
+
+    <color name="completion_card_bg">#F2F6FB</color>
+    <color name="pending_card_bg">#FFF8F0</color>
+
+    <color name="text_title">#333333</color>
+    <color name="text_label">#888888</color>
+    <color name="text_label_dark">#333333</color>
+    <color name="completion_text">#1877F2</color>
+    <color name="pending_text">#F2994A</color>
+
+
+
+    <!-- Stat card colors -->
+    <color name="light_green">#A5D6A7</color>
+    <color name="light_blue">#90CAF9</color>
+    <color name="light_purple">#B39DDB</color>
+    <color name="light_red">#EF9A9A</color>
+
+    <!-- Text colors -->
+    <color name="stat_value_text">#212121</color>
+    <color name="stat_label_text">#424242</color>
+    <color name="chart_title_text">#1E1E1E</color>
+
+
+
+</resources>

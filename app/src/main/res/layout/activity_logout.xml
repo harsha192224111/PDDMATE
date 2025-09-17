@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Logout Icon -->
+    <ImageView
+        android:id="@+id/logout_icon"
+        android:layout_width="69dp"
+        android:layout_height="63dp"
+        android:src="@drawable/ic_logout"
+        android:contentDescription="@string/logout_icon_desc"
+        app:tint="@color/gray_dark"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Confirmation Text -->
+    <TextView
+        android:id="@+id/logout_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/logout_confirmation"
+        android:textColor="@color/textPrimary"
+        android:textSize="16sp"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Logout Button -->
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:minWidth="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        android:backgroundTint="@color/errorRed"
+        android:textColor="@color/white"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Cancel Button -->
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:minWidth="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:backgroundTint="@color/gray"
+        android:textColor="@color/black" />
+</LinearLayout>

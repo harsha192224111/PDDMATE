@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    card_view:cardCornerRadius="16dp"
+    card_view:cardElevation="8dp"
+    card_view:cardBackgroundColor="#C8ECFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Course code and title in one line -->
+        <TextView
+            android:id="@+id/courseDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PDD01 - PDD for Android Development"
+            android:textStyle="bold"
+            android:textColor="@color/title"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <!-- Slot type icon and label -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/typeIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_app_dev"
+                android:contentDescription="@string/project_type_icon" />
+
+            <TextView
+                android:id="@+id/slotType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="App Development"
+                android:textColor="@color/subtitle"
+                android:textSize="14sp"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Slot leader -->
+        <TextView
+            android:id="@+id/slotLeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selvaraj"
+            android:textColor="@color/subtitle"
+            android:textSize="14sp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="20dp"/>
+
+        <!-- Verify Button -->
+        <Button
+            android:id="@+id/verifyBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:text="@string/verify"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,473 @@
+<resources>
+    <string name="app_name">PDD Mate</string>
+    <string name="logo_content_desc">App Logo</string>
+    <string name="create_account">Create Account</string>
+    <string name="join_us_today">Join us today</string>
+    <string name="fill_details">Fill in your details to create an account</string>
+    <string name="full_name">Full Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="role">Role</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+
+    <string name="email_label">Email</string>
+    <string name="email_hint">Enter your email address</string>
+    <string name="password_label">Password</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="login_button">Log In</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="dont_have_account">Don’t have an account?</string>
+    <string name="signup_here">Signup here</string>
+    <string name="invalid_credentials">Invalid Login Credentials</string>
+    <string name="invalid_credentials_desc">The email or password you entered is incorrect.</string>
+    <string name="try_again">Try Again</string>
+    <string name="warning_icon">Warning Icon</string>
+
+    <string name="reset_password">Reset Password</string>
+    <string name="registered_email">Enter your registered email</string>
+    <string name="example_email">example@gmail.com</string>
+    <string name="new_password">New Password</string>
+    <string name="enter_new_password">Enter New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="reenter_new_password">Re-Enter New Password</string>
+    <string name="show_password">Show Password</string>
+    <string name="hide_password">Hide Password</string>
+    <string name="white">White</string>
+
+    <!-- Labels -->
+    <string name="label_full_name">Full Name</string>
+    <string name="label_email">Email Address</string>
+    <string name="label_phone">Phone Number</string>
+    <string name="label_role">Role</string>
+    <string name="label_password">Password</string>
+    <string name="label_confirm_password">Confirm Password</string>
+
+    <!-- Hints -->
+    <string name="hint_full_name">Enter your full name</string>
+    <string name="hint_email">example@gmail.com</string>
+    <string name="hint_phone">+91</string>
+    <string name="hint_password">Create password</string>
+    <string name="hint_confirm_password">Confirm your password</string>
+
+    <!-- Buttons -->
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="login_here">Login here</string>
+    <string name="back">Back</string>
+
+
+    <string name="reg_no_lable">ID / Registration Number</string>
+    <string name="reg_no">Enter Your ID / Reg No</string>
+
+    <!-- Spinner -->
+    <string-array name="role_options">
+        <item>Student</item>
+        <item>Developer</item>
+        <item>Supervisor</item>
+    </string-array>
+
+    <string name="reset_password_title">Reset Password</string>
+    <string name="new_password_label">New Password</string>
+    <string name="new_password_hint">Enter New Password</string>
+    <string name="confirm_password_label">Confirm New Password</string>
+    <string name="confirm_password_hint">Re-Enter New Password</string>
+    <string name="reset_password_btn">Reset Password</string>
+    <string name="cd_back">Go Back</string>
+    <string name="cd_show_password">Show Password</string>
+
+    <string name="logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout_confirmation">Are you sure you want to log out?</string>
+    <string name="logout_icon_desc">Logout Icon</string>
+
+    <string name="slot_enrollment">Slot Enrollment</string>
+    <string name="pdd_android_development">PDD01 - PDD for Android Development</string>
+    <string name="pdd_ios">PDD02 - PDD for IOS Development</string>
+    <string name="pdd_product">PDD03 - PDD for Product Development</string>
+    <string name="trainer_icon">Trainer Icon</string>
+    <string name="category_icon">Category Icon</string>
+    <string name="trainer_selvaraj">Selvaraj</string>
+    <string name="trainer_senthil">Senthil</string>
+    <string name="trainer_jaya">Jaya Prakash</string>
+    <string name="app_development">App Development</string>
+    <string name="product_development">Product Development</string>
+    <string name="request_to_enroll">Request to Enroll</string>
+
+    <string name="project_milestones">Project Milestones</string>
+    <string name="back_arrow">Back arrow</string>
+    <string name="progress_percent">90%</string>
+    <string name="project_progress">Project Progress</string>
+
+    <!-- Milestones with titles & descriptions -->
+    <string name="step_idea_selection_title">Idea Selection</string>
+    <string name="step_idea_selection_desc">Selecting and finalizing the best project idea.</string>
+
+    <string name="step_uiux_title">UI / UX Design</string>
+    <string name="step_uiux_desc">Designing the user experience and wireframes.</string>
+
+    <string name="step_frontend_title">Frontend Development</string>
+    <string name="step_frontend_desc">Building the user interface and client-side features.</string>
+
+    <string name="step_backend_title">Backend Development</string>
+    <string name="step_backend_desc">Implementing server-side logic and database connections.</string>
+
+    <string name="step_deploy_title">Final Deployment</string>
+    <string name="step_deploy_desc">Preparing for production and deployment of the app.</string>
+
+    <string name="step_doc_title">Documentation</string>
+    <string name="step_doc_desc">Completing project documentation and submission.</string>
+
+
+    <string name="project_name">PDD for Android Development</string>
+
+
+    <!-- Stages -->
+    <string name="idea_selection">Idea Selection</string>
+    <string name="idea_sub">Project Concept</string>
+
+    <string name="modelling">2D &amp; 3D Modelling</string>
+    <string name="modelling_sub">Visual Designing</string>
+
+    <string name="prototype">Prototype Development</string>
+    <string name="prototype_sub">User Interface</string>
+
+    <string name="testing">Validation &amp; Testing</string>
+    <string name="testing_sub">Server Side Implementation</string>
+
+    <string name="integration">Product Integration</string>
+    <string name="integration_sub">Production Deployment</string>
+
+    <string name="documentation">Documentation</string>
+    <string name="documentation_sub">Document Submission</string>
+
+    <!-- Sample -->
+    <string name="sample_title">Stage Title</string>
+    <string name="sample_subtitle">Stage Subtitle</string>
+
+    <string name="confirm_enrollment_title">Confirm Enrollment</string>
+    <string name="confirm_enrollment_message">Would you like to confirm your enrollment?</string>
+    <string name="confirm">Confirm</string>
+    <string name="close_popup">Close Popup</string>
+
+
+    <string name="logo_desc">App logo: colorful bulb</string>
+
+    <string name="bulb_desc">Innovation lightbulb illustration</string>
+
+
+    <string name="student_description">
+        Step into a world of innovation where your ideas grow into impactful projects.
+        Track your progress through every milestone, showcase your skills, and receive guidance
+        to transform concepts into reality. Your journey from learner to creator begins here.
+    </string>
+
+    <string name="developer_description">
+        Step into a world of innovation where your ideas grow into impactful projects.
+        Track your progress through every milestone, showcase your skills, and receive guidance
+        to transform concepts into reality. Your journey from learner to creator begins here.
+    </string>
+
+    <string name="supervisor_description">
+        Step into a world of innovation where your ideas grow into impactful projects.
+        Track your progress through every milestone, showcase your skills, and receive guidance
+        to transform concepts into reality. Your journey from learner to creator begins here.
+    </string>
+
+
+    <string name="verification">Verification</string>
+
+
+
+    <string name="mobile_number_hint">+91 Enter your Mobile number</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="get_otp">Get OTP</string>
+    <string name="enter_otp_description">Enter the verification sent to your mail</string>
+    <string name="verify">Verify</string>
+
+    <string name="dot">.</string>
+    <string name="pdd_android">PDD Android Development</string>
+
+
+    <string name="pdd_mate">PDD MATE</string>
+
+
+    <string name="title_pdd_mate">PDD MATE</string>
+    <string name="menu_desc">Open menu</string>
+    <string name="notifications">Notifications</string>
+    <string name="bell_icon_desc">Notification bell</string>
+    <string name="ui_ux_accepted">UI / UX design phase accepted</string>
+    <string name="backend_rejected">Back-end phase rejected</string>
+    <string name="prev_month">Previous month</string>
+    <string name="next_month">Next month</string>
+    <string name="calendar_desc">Project calendar for scheduling and deadlines</string>
+    <string name="app_logo_desc">App logo</string>
+    <string name="accepted_icon">Accepted icon</string>
+    <string name="rejected_icon">Rejected icon</string>
+    <string name="month_text">Sep</string>
+    <string name="year_text">2025</string>
+
+
+    <!-- General -->
+
+    <string name="slots_title">Slots</string>
+    <string name="active_slots">Active Slots</string>
+    <string name="add_slot">Add New Slot</string>
+    <string name="view_button">View</string>
+
+    <!-- Slot 1 -->
+    <string name="slot1_title">PDD01 - PDD for Android Development</string>
+
+    <!-- Slot 2 -->
+    <string name="slot2_title">PDD02 - PDD for iOS Development</string>
+
+    <!-- Common -->
+    <string name="category_app_dev">App Development</string>
+    <string name="mentor_name">Selvaraj</string>
+
+
+    <string name="create_new_slot">Create New Slot</string>
+    <string name="course_code">Course Code</string>
+    <string name="enter_course_code">Enter Course Code</string>
+
+    <string name="enter_course_title">Enter Course Title</string>
+    <string name="maximum_students">Maximum Students</string>
+    <string name="enter_capacity">Enter Capacity</string>
+    <string name="project_type">Project Type</string>
+    <string name="app">App</string>
+    <string name="product">Product</string>
+    <string name="date">Date</string>
+    <string name="date_hint">DD/MM/YYYY</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="launch_slot">Launch Slot</string>
+    <string name="max_capacity">Maximum Capacity</string>
+    <string name="date_placeholder">DD/MM/YYYY</string>
+    <string name="select_date">Select Date</string>
+
+
+    <string name="slot_details">Slot Details</string>
+    <string name="pdd01_title">PDD01 - PDD for Android Development</string>
+
+    <string name="students">Students</string>
+    <string name="student">Student</string>
+    <string name="student_name_1">Harsha Phani Teja G</string>
+    <string name="student_roll_1">192224111</string>
+    <string name="student_requests">Student Requests</string>
+    <string name="student_name_req_1">Harsha Phani</string>
+    <string name="student_roll_req_1">192224111</string>
+    <string name="approve">Approve</string>
+    <string name="reject">Reject</string>
+
+    <string name="course_title">PDD01 - PDD for Android Development</string>
+    <string name="course_category">App Development</string>
+    <string name="text_code_title">%1$s - %2$s</string>
+    <string name="text_slots_left">%1$d/%2$d Slots Left</string>
+
+    <string name="status_pending_approval">Pending Approval</string>
+    <string name="status_accepted">Accepted</string>
+    <string name="status_with_prefix">Status: %1$s</string>
+    <string name="confirm_enrollment_message_dynamic">Do you want to enroll in %1$s?</string>
+    <string name="course_title_label">Course Title</string>
+
+    <string name="slots_left_placeholder">Slots Left: %1$d</string>
+
+
+    <string name="project_title">PDD for Android Development</string>
+    <string name="progress_percentage">90%</string>
+    <string name="progress_circle_desc">Overall project progress circle showing 90 percent completion</string>
+    <string name="progress_text_desc">Overall project completion percentage</string>
+
+    <string name="step_completed">Milestone Completed</string>
+    <string name="step_pending">Milestone Pending</string>
+    <string name="step_error">Milestone Error/Blocked</string>
+    <string name="step1_title">Idea Selection</string>
+    <string name="step1_desc">Project Concept</string>
+    <string name="step2_title">UI / UX Design</string>
+    <string name="step2_desc">Visual Design</string>
+    <string name="step3_title">Frontend Development</string>
+    <string name="step3_desc">User Interface</string>
+    <string name="step4_title">Backend Development</string>
+    <string name="step4_desc">Server side Implementation</string>
+    <string name="step5_title">Integration</string>
+    <string name="step5_desc">Connecting front-end &amp; back-end</string>
+    <string name="step6_title">Documentation</string>
+    <string name="step6_desc">Document Submission</string>
+
+    <!-- General -->
+
+
+    <!-- Icon Descriptions -->
+    <string name="desc_completed">Milestone completed</string>
+    <string name="desc_pending">Milestone pending</string>
+    <string name="desc_error">Milestone has errors/blockers</string>
+
+    <!-- Steps -->
+
+    <string name="clock_icon">Clock Icon</string>
+    <string name="phase_deadline">Phase Dead line: 10th Sep 2025</string>
+
+    <string name="project_title_hint">Enter Project Title</string>
+    <string name="project_desc">Project Title Description</string>
+    <string name="project_desc_hint">Enter Project Title Description</string>
+    <string name="submit_review">Submit for Review</string>
+
+
+    <string name="idea_finalization">Idea Finalization</string>
+
+    <string name="upload_phase_docs">Upload your phase documents</string>
+    <string name="upload_files">Upload your files</string>
+    <string name="upload_icon">Upload Icon</string>
+    <string name="upload_formats">PDF, DOC or Video files</string>
+    <string name="previous_uploads">Previous Uploads</string>
+    <string name="file_icon">File Icon</string>
+
+
+    <string name="verify_progress">Verify Progress</string>
+    <string name="slots">Slots</string>
+
+    <string name="project_type_icon">Project Type Icon</string>
+
+
+    <string name="students_progress_verification">Students Progress Verification</string>
+
+    <string name="app_dev_icon">App Development Icon</string>
+
+
+    <string name="project_title_format">%1$s - %2$s</string>
+    <string name="slots_left">Slots Left: %1$d</string>
+    <string name="action_failed">Action failed</string>
+    <string name="student_id_format">ID: %1$s</string>
+
+    <string name="developer_feedback_placeholder">Developer feedback will appear here.</string>
+    <string name="files_submitted_message">Files submitted for review</string>
+    <string name="uiux_title">UI / UX Design</string>
+    <string name="uiux_desc">Upload your UI/UX designs</string>
+    <string name="frontend_title">Frontend Development</string>
+    <string name="frontend_desc">Upload your frontend code and assets</string>
+    <string name="backend_title">Backend Development</string>
+    <string name="backend_desc">Upload backend APIs and documentation</string>
+    <string name="testing_title">Testing &amp; QA</string>
+    <string name="testing_desc">Upload test plans and reports</string>
+    <string name="documentation_title">Documentation</string>
+    <string name="documentation_desc">Upload project documentation</string>
+    <string name="modelling_title">2D &amp; 3D Modelling</string>
+    <string name="modelling_desc">Upload modelling files and designs</string>
+    <string name="prototype_title">Prototype Development</string>
+    <string name="prototype_desc">Upload prototype files</string>
+    <string name="validation_title">Validation &amp; Testing</string>
+    <string name="validation_desc">Upload testing and feedback files</string>
+    <string name="integration_title">Product Integration</string>
+    <string name="integration_desc">Upload integration documents</string>
+
+
+    <string name="upload_phase_documents">Upload your phase documents</string>
+
+    <string name="upload_your_files">Upload your files</string>
+    <string name="pdf_doc_video_files">PDF, DOC or Video files</string>
+    <string name="developer_feedback">Developer Feedback</string>
+    <string name="sample_feedback">Idea is not good\nchoose innovative idea</string>
+
+    <string name="pdf_icon">PDF Icon</string>
+    <string name="doc_icon">DOC Icon</string>
+    <string name="mp4_icon">MP4 Icon</string>
+    <string name="submit_for_review">Submit for Review</string>
+    <string name="deadline_icon">Phase deadline icon</string>
+    <string name="deadline_text">Phase Dead line: 10th Sep 2025</string>
+
+
+    <string name="project_title_pdd">PDD for Android Development</string>
+
+
+    <!-- Developer Info -->
+    <string name="developer_icon">Developer Icon</string>
+    <string name="developer_name">Harsha Phani Teja G</string>
+    <string name="developer_id">192224111</string>
+
+
+    <string name="time_icon">Time Icon</string>
+    <string name="submitted_on">Submitted on: Sep 10th 2025</string>
+
+    <string name="project_title_value">PDD Project Management App</string>
+
+    <string name="project_desc_value">PDD Project Management app is to tract the progress and also to reduce the communication gap between student and developer and supervisor</string>
+    <string name="accept">Accept</string>
+
+
+
+    <string name="ui_ux_design">UI / UX Design</string>
+
+    <string name="project_title_prefix">Project Title   PDD Project Management App</string>
+
+    <string name="submitted_files">Submitted Files</string>
+
+    <string name="download_icon">Download</string>
+    <string name="file1">Research_Report.pdf</string>
+    <string name="file2">Literature_Review.docx</string>
+    <string name="file3">Presentation.mp4</string>
+    <string name="clear">Clear</string>
+
+    <string name="select_files_to_upload">Please select files to upload.</string>
+    <string name="cleared_files_from_selection">Cleared files from selection.</string>
+    <string name="selected_file">Selected File</string>
+    <string name="network_error">Network error: %1$s</string>
+    <string name="uploading">Uploading...</string>
+    <string name="failed_get_filename">Failed to get filename for one of the files.</string>
+    <string name="failed_read_file">Failed to read one of the files.</string>
+    <string name="no_valid_files_to_upload">No valid files to upload.</string>
+    <string name="files_submitted_successfully">Files submitted successfully!</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="upload_failed">Upload failed: %1$s</string>
+
+    <string name="total_students_count">248</string>
+    <string name="total_developers_count">156</string>
+    <string name="completion_rate_value">76%%</string> <string name="pending_reviews_count">23</string>
+
+    <string name="total_students">Total Students</string>
+    <string name="total_developers">Total Developers</string>
+    <string name="completion_rate">Completion Rate</string>
+    <string name="pending_reviews">Pending Reviews</string>
+
+    <string name="progress_trends_title">Progress Trends</string>
+    <string name="milestone_performance_title">Milestone Performance</string>
+    <string name="student_progress_title">Student Progress</string>
+    <string name="success_rate_distribution_title">Success Rate Distribution</string>
+
+    <string name="progress_trends_desc">A line graph showing progress trends over time.</string>
+    <string name="milestone_performance_desc">A bar chart showing milestone performance.</string>
+    <string name="student_progress_desc">A bar graph showing student progress in app vs product development.</string>
+    <string name="success_rate_distribution_desc">A donut chart showing the distribution of high, medium, and low success rates.</string>
+
+
+    <!-- Stats -->
+    <string name="total_students_value">248</string>
+    <string name="total_students_label">Total Students</string>
+    <string name="total_developers_value">156</string>
+    <string name="total_developers_label">Total Developers</string>
+
+    <string name="completion_rate_label">Completion Rate</string>
+    <string name="pending_reviews_value">23</string>
+    <string name="pending_reviews_label">Pending Reviews</string>
+
+    <!-- Charts -->
+    <string name="progress_trends_label">Progress Trends</string>
+
+    <string name="milestone_performance_label">Milestone Performance</string>
+
+    <string name="student_progress_label">Student Progress</string>
+
+    <string name="success_rate_label">Success Rate Distribution</string>
+    <string name="success_rate_desc">Success Rate Distribution Chart</string>
+    <string name="no_new_files_to_upload">No new files to upload</string>
+
+
+    <string name="profile">Profile</string>
+
+    <string name="profile_picture">Profile Picture</string>
+
+    <string name="registration_number">Registration Number</string>
+
+
+
+
+</resources>
+

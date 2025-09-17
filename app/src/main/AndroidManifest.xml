@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PDDMate"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".VerifyProgressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SlotDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SupervisorHomePageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateSlotActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".StudentProgressVerificationActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".SlotsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DeveloperHomePageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StudentHomePageActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".SlotEnrollmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LogoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InvalidCredentialsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ProjectMilestoneAppActivity"
+            android:exported="false" />
+        <activity
+            android:name=".IdeaSelectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FileUploadsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProjectMilestoneProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MilestoneDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VerifyProjectMilestoneAppActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VerifyProjectMilestoneProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VerifyIdeaSelectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VerifyFileUploadsActivity"
+            android:exported="false" />
+
+        <activity android:name=".VerifyMilestoneDetailActivity" />
+
+
+
+
+
+
+    </application>
+
+</manifest>
