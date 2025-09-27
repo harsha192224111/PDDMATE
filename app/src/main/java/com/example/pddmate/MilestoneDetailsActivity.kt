@@ -1,12 +1,12 @@
 package com.example.pddmate
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -32,26 +32,34 @@ class MilestoneDetailActivity : AppCompatActivity() {
     private lateinit var backArrow: ImageView
     private lateinit var deadlineTextView: TextView
     private lateinit var clearButton: TextView
+
     private val selectedFiles = mutableListOf<Uri>()
     private var projectId: Int = -1
     private var stepIndex: Int = -1
+    private var userId: String? = null
     private lateinit var apiService: ApiService
     private val uploadedFileNames = mutableSetOf<String>()
 
+    // tracks whether user clicked "Clear" before selecting new files -> informs server to replace DB entries
+    private var clearedSelection = false
+
     interface ApiService {
         @Multipart
-        @POST("upload_file.php")
+        @POST("upload_files.php")
         fun uploadFiles(
             @Part files: List<MultipartBody.Part>,
             @Part("project_id") projectId: RequestBody,
-            @Part("milestone_index") milestoneIndex: RequestBody
+            @Part("milestone_index") milestoneIndex: RequestBody,
+            @Part("user_id") userId: RequestBody,
+            @Part("replace_existing") replaceExisting: RequestBody? // optional
         ): Call<ApiResponse>
 
         @FormUrlEncoded
         @POST("get_files.php")
         fun getFiles(
             @Field("project_id") projectId: Int,
-            @Field("milestone_index") milestoneIndex: Int
+            @Field("milestone_index") milestoneIndex: Int,
+            @Field("user_id") userId: String
         ): Call<FilesResponse>
     }
 
@@ -60,17 +68,15 @@ class MilestoneDetailActivity : AppCompatActivity() {
         val message: String,
         val responses: List<FileUploadResponse>? = null
     )
-
     data class FileUploadResponse(
         val file: String,
         val success: Boolean,
         val message: String
     )
-
     data class FilesResponse(
         val success: Boolean,
         val message: String,
-        val files: List<String> = emptyList()
+        val files: List<Map<String, String>> = emptyList()
     )
 
     private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -103,13 +109,13 @@ class MilestoneDetailActivity : AppCompatActivity() {
         val milestoneType = intent.getStringExtra("MILESTONE_TYPE")
         stepIndex = intent.getIntExtra("STEP_INDEX", -1)
         projectId = intent.getIntExtra("PROJECT_ID", -1)
+        userId = intent.getStringExtra("USER_ID") // Get USER_ID from Intent
 
         val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.213.74.64/pdd_dashboard/")
+            .baseUrl("http://192.168.31.109/pdd_dashboard/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-
         apiService = retrofit.create(ApiService::class.java)
 
         backArrow = findViewById(R.id.backArrow)
@@ -124,27 +130,35 @@ class MilestoneDetailActivity : AppCompatActivity() {
         backArrow.setOnClickListener { finish() }
         setTitleAndDescriptionByType(milestoneType, stepIndex)
         uploadSection.setOnClickListener { openFileChooser() }
+
         submitButton.setOnClickListener {
             if (selectedFiles.isNotEmpty()) {
-                uploadFiles(projectId, stepIndex, selectedFiles)
+                if (!userId.isNullOrEmpty()) {
+                    uploadFiles(projectId, stepIndex, userId!!, selectedFiles)
+                } else {
+                    Toast.makeText(this, "User ID not found.", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(this, getString(R.string.select_files_to_upload), Toast.LENGTH_SHORT).show()
             }
         }
+
         clearButton.setOnClickListener {
+            clearedSelection = true
             selectedFiles.clear()
             previousUploadsLayout.removeAllViews()
             updatePreviousUploadsUI()
             Toast.makeText(this, getString(R.string.cleared_files_from_selection), Toast.LENGTH_SHORT).show()
         }
-        fetchUploadedFiles(projectId, stepIndex)
+
+        if (projectId != -1 && stepIndex != -1 && !userId.isNullOrEmpty()) {
+            fetchUploadedFiles(projectId, stepIndex, userId!!)
+        }
     }
 
     private fun updatePreviousUploadsUI() {
         previousUploadsLayout.removeAllViews()
-        // Add previously uploaded files first
         uploadedFileNames.forEach { addFileToPreviousUploads(it, isNewUpload = false) }
-        // Then add currently selected files
         selectedFiles.forEach { uri ->
             val fileName = getFileNameFromUri(uri)
             if (fileName != null && !uploadedFileNames.contains(fileName)) {
@@ -221,8 +235,8 @@ class MilestoneDetailActivity : AppCompatActivity() {
         previousUploadsLayout.addView(layout)
     }
 
-    private fun fetchUploadedFiles(projectId: Int, stepIndex: Int) {
-        apiService.getFiles(projectId, stepIndex).enqueue(object : Callback<FilesResponse> {
+    private fun fetchUploadedFiles(projectId: Int, stepIndex: Int, userId: String) {
+        apiService.getFiles(projectId, stepIndex, userId).enqueue(object : Callback<FilesResponse> {
             override fun onResponse(call: Call<FilesResponse>, response: Response<FilesResponse>) {
                 previousUploadsLayout.removeAllViews()
                 selectedFiles.clear()
@@ -231,7 +245,8 @@ class MilestoneDetailActivity : AppCompatActivity() {
                     val body = response.body()
                     if (body != null && body.success) {
                         body.files.forEach {
-                            uploadedFileNames.add(it)
+                            val name = it["file_name"] ?: it["file_name".toString()]
+                            if (name != null) uploadedFileNames.add(name)
                         }
                     } else {
                         val errorBodyString = response.errorBody()?.string()
@@ -252,10 +267,11 @@ class MilestoneDetailActivity : AppCompatActivity() {
         })
     }
 
-    private fun uploadFiles(projectId: Int, stepIndex: Int, fileUris: List<Uri>) {
+    private fun uploadFiles(projectId: Int, stepIndex: Int, userId: String, fileUris: List<Uri>) {
         submitButton.isEnabled = false
         submitButton.text = getString(R.string.uploading)
         val fileParts = mutableListOf<MultipartBody.Part>()
+
         for (uri in fileUris) {
             val fileName = getFileNameFromUri(uri)
             if (fileName == null || uploadedFileNames.contains(fileName)) {
@@ -271,15 +287,25 @@ class MilestoneDetailActivity : AppCompatActivity() {
             val part = MultipartBody.Part.createFormData("files[]", fileName, requestFile)
             fileParts.add(part)
         }
+
         if (fileParts.isEmpty()) {
             Toast.makeText(this, getString(R.string.no_new_files_to_upload), Toast.LENGTH_SHORT).show()
             submitButton.isEnabled = true
             submitButton.text = getString(R.string.submit_for_review)
             return
         }
+
         val projectIdPart = projectId.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         val stepIndexPart = stepIndex.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-        val call = apiService.uploadFiles(fileParts, projectIdPart, stepIndexPart)
+        val userIdPart = userId.toRequestBody("text/plain".toMediaTypeOrNull())
+
+        val replacePart = if (clearedSelection) {
+            "1".toRequestBody("text/plain".toMediaTypeOrNull())
+        } else {
+            "0".toRequestBody("text/plain".toMediaTypeOrNull())
+        }
+
+        val call = apiService.uploadFiles(fileParts, projectIdPart, stepIndexPart, userIdPart, replacePart)
         call.enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 submitButton.isEnabled = true
@@ -288,8 +314,9 @@ class MilestoneDetailActivity : AppCompatActivity() {
                     val body = response.body()
                     if (body != null && body.success) {
                         Toast.makeText(this@MilestoneDetailActivity, getString(R.string.files_submitted_successfully), Toast.LENGTH_SHORT).show()
-                        fetchUploadedFiles(projectId, stepIndex)
+                        fetchUploadedFiles(projectId, stepIndex, userId)
                         selectedFiles.clear()
+                        clearedSelection = false
                     } else {
                         val message = body?.message ?: response.errorBody()?.string() ?: getString(R.string.unknown_error)
                         Toast.makeText(this@MilestoneDetailActivity, getString(R.string.upload_failed, message), Toast.LENGTH_LONG).show()

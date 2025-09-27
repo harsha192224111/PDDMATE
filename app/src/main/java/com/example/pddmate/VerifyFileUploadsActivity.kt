@@ -1,70 +1,202 @@
 package com.example.pddmate
 
+import android.app.DownloadManager
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
+import java.io.File
+import java.util.Locale
 
 class VerifyFileUploadsActivity : AppCompatActivity() {
 
     private lateinit var backArrow: ImageView
-    private lateinit var titleTextView: TextView
+    private lateinit var milestoneTitleTextView: TextView
+    private lateinit var studentNameTextView: TextView
+    private lateinit var studentIdTextView: TextView
+    private lateinit var projectTitleValue: TextView
+    private lateinit var fileListLayout: LinearLayout
     private lateinit var acceptButton: Button
     private lateinit var rejectButton: Button
 
-    private lateinit var fileCard1: CardView
-    private lateinit var fileCard2: CardView
-    private lateinit var fileCard3: CardView
-    private lateinit var fileName1: TextView
-    private lateinit var fileName2: TextView
-    private lateinit var fileName3: TextView
+    private var projectId: Int = -1
+    private var stepIndex: Int = -1
+    private var studentUserId: String? = null // Correct variable to hold the student's user ID
+    private var studentName: String? = null
+    private var milestoneTitle: String? = null
+    private var projectTitle: String? = null
+
+    private lateinit var apiService: ApiService
+
+    data class FileItem(val fileName: String, val filePath: String)
+    data class FilesResponse(
+        val success: Boolean,
+        val message: String,
+        val files: List<Map<String, String>> = emptyList(),
+        val project_title: String? = null
+    )
+
+    interface ApiService {
+        @FormUrlEncoded
+        @POST("verify_files.php")
+        fun getFiles(
+            @Field("project_id") projectId: Int,
+            @Field("milestone_index") milestoneIndex: Int,
+            @Field("user_id") userId: String
+        ): Call<FilesResponse>
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verify_file_uploads)
 
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://192.168.31.109/pdd_dashboard/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        apiService = retrofit.create(ApiService::class.java)
+
+        projectId = intent.getIntExtra("project_id", -1)
+        stepIndex = intent.getIntExtra("STEP_INDEX", -1)
+        studentUserId = intent.getStringExtra("student_user_id") // Correctly retrieve the student's user ID
+        studentName = intent.getStringExtra("student_name")
+        milestoneTitle = intent.getStringExtra("MILESTONE_TITLE")
+        projectTitle = intent.getStringExtra("project_title")
+
         backArrow = findViewById(R.id.backArrow)
-        titleTextView = findViewById(R.id.title)
+        milestoneTitleTextView = findViewById(R.id.title)
+        studentNameTextView = findViewById(R.id.studentNameTextView)
+        studentIdTextView = findViewById(R.id.studentIdTextView)
+        projectTitleValue = findViewById(R.id.projectTitleValue)
+        fileListLayout = findViewById(R.id.fileListLayout)
         acceptButton = findViewById(R.id.acceptButton)
         rejectButton = findViewById(R.id.rejectButton)
 
-        fileCard1 = findViewById(R.id.fileCard1)
-        fileCard2 = findViewById(R.id.fileCard2)
-        fileCard3 = findViewById(R.id.fileCard3)
+        backArrow.setOnClickListener { finish() }
 
-        fileName1 = findViewById(R.id.fileName1)
-        fileName2 = findViewById(R.id.fileName2)
-        fileName3 = findViewById(R.id.fileName3)
+        milestoneTitleTextView.text = milestoneTitle
+        studentNameTextView.text = studentName
+        studentIdTextView.text = studentUserId
+        projectTitleValue.text = "Project: $projectTitle"
 
-        // Set dynamic title from intent extra
-        val milestoneTitle = intent.getStringExtra("MILESTONE_TITLE")
-        if (!milestoneTitle.isNullOrBlank()) {
-            titleTextView.text = milestoneTitle
-        }
+        fetchUploadedFiles()
 
-        backArrow.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-
+        // Implement logic for Accept/Reject buttons
         acceptButton.setOnClickListener {
-            Toast.makeText(this, "Files Accepted", Toast.LENGTH_SHORT).show()
+            // Logic to approve the milestone
+            Toast.makeText(this, "Submission accepted!", Toast.LENGTH_SHORT).show()
         }
 
         rejectButton.setOnClickListener {
-            Toast.makeText(this, "Files Rejected", Toast.LENGTH_SHORT).show()
+            // Logic to reject the milestone
+            Toast.makeText(this, "Submission rejected.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun fetchUploadedFiles() {
+        if (projectId != -1 && stepIndex != -1 && !studentUserId.isNullOrEmpty()) {
+            apiService.getFiles(projectId, stepIndex, studentUserId!!).enqueue(object : Callback<FilesResponse> {
+                override fun onResponse(call: Call<FilesResponse>, response: Response<FilesResponse>) {
+                    fileListLayout.removeAllViews()
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        val files = response.body()?.files ?: emptyList()
+                        if (files.isNotEmpty()) {
+                            files.forEach { fileMap ->
+                                val fileName = fileMap["file_name"]
+                                val filePath = fileMap["file_path"]
+                                if (fileName != null && filePath != null) {
+                                    addFileView(FileItem(fileName, filePath))
+                                }
+                            }
+                        } else {
+                            addNoFilesView()
+                        }
+                    } else {
+                        addNoFilesView()
+                        Toast.makeText(this@VerifyFileUploadsActivity, "Failed to fetch files.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<FilesResponse>, t: Throwable) {
+                    addNoFilesView()
+                    Log.e("VerifyFileUploads", "Error fetching files: ${t.message}")
+                    Toast.makeText(this@VerifyFileUploadsActivity, "Network error: ${t.message}", Toast.LENGTH_LONG).show()
+                }
+            })
+        }
+    }
+
+    private fun addFileView(fileItem: FileItem) {
+        val fileView = LayoutInflater.from(this).inflate(R.layout.file_item_card, fileListLayout, false)
+        val fileNameTextView = fileView.findViewById<TextView>(R.id.fileName)
+        val fileIcon = fileView.findViewById<ImageView>(R.id.fileIcon)
+        val downloadIcon = fileView.findViewById<ImageView>(R.id.downloadFile)
+
+        fileNameTextView.text = fileItem.fileName
+        setFileIcon(fileIcon, fileItem.fileName)
+
+        downloadIcon.setOnClickListener {
+            downloadFile(fileItem)
         }
 
-        fileCard1.setOnClickListener {
-            Toast.makeText(this, "Opening ${fileName1.text}", Toast.LENGTH_SHORT).show()
+        fileListLayout.addView(fileView)
+    }
+
+    private fun addNoFilesView() {
+        val noFilesTextView = TextView(this).apply {
+            text = getString(R.string.no_files_uploaded_for_this_milestone)
+            gravity = View.TEXT_ALIGNMENT_CENTER
+            setPadding(0, 32, 0, 32)
         }
-        fileCard2.setOnClickListener {
-            Toast.makeText(this, "Opening ${fileName2.text}", Toast.LENGTH_SHORT).show()
+        fileListLayout.addView(noFilesTextView)
+    }
+
+    private fun setFileIcon(imageView: ImageView, fileName: String) {
+        val fileExtension = File(fileName).extension.lowercase(Locale.getDefault())
+        val iconRes = when (fileExtension) {
+            "pdf" -> R.drawable.ic_pdf
+            "doc", "docx" -> R.drawable.ic_doc
+            "mp4", "avi", "mkv" -> R.drawable.ic_mp4
+            else -> R.drawable.ic_file
         }
-        fileCard3.setOnClickListener {
-            Toast.makeText(this, "Opening ${fileName3.text}", Toast.LENGTH_SHORT).show()
+        imageView.setImageResource(iconRes)
+    }
+
+    private fun downloadFile(fileItem: FileItem) {
+        val baseUrl = "http://192.168.31.109/pdd_dashboard/"
+        val fullUrl = "$baseUrl${fileItem.filePath}"
+
+        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val uri = Uri.parse(fullUrl)
+        val request = DownloadManager.Request(uri)
+            .setTitle("Downloading ${fileItem.fileName}")
+            .setDescription("Downloading file from PDD Dashboard")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileItem.fileName)
+
+        try {
+            downloadManager.enqueue(request)
+            Toast.makeText(this, "Downloading started...", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Log.e("VerifyFileUploads", "Download failed: ${e.message}")
+            Toast.makeText(this, "Failed to start download: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 }

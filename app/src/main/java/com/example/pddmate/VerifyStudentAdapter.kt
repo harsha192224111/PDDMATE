@@ -34,7 +34,7 @@ class VerifyStudentAdapter(
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
         val student = students[position]
         holder.studentNameTextView.text = student.name
-        holder.studentUserIdTextView.text = student.userId
+        holder.studentUserIdTextView.text = student.user_id
     }
 
     override fun getItemCount(): Int = students.size

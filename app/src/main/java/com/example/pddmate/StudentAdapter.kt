@@ -21,7 +21,7 @@ class StudentAdapter(private val students: List<Student>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
         val student = students[position]
         holder.studentName.text = student.name
-        holder.studentUserId.text = student.userId // Changed from student.user_id
+        holder.studentUserId.text = student.user_id // Correct property name used here
     }
 
     override fun getItemCount() = students.size

@@ -465,7 +465,9 @@
     <string name="profile_picture">Profile Picture</string>
 
     <string name="registration_number">Registration Number</string>
-
+    <string name="file_placeholder">File name</string>
+    <string name="idea_verification">idea verification</string>
+    <string name="no_files_uploaded_for_this_milestone">no file uploads for this milestone</string>
 
 
 

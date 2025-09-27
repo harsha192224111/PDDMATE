@@ -35,9 +35,6 @@ class FileUploadsActivity : AppCompatActivity() {
             finish()
         }
 
-        // This is not in the original code snippet
-        // feedbackEditText.isEnabled = false
-
         uploadSection.setOnClickListener {
             openFileChooser()
         }
@@ -49,8 +46,6 @@ class FileUploadsActivity : AppCompatActivity() {
             }
             Toast.makeText(this, "Files submitted for review", Toast.LENGTH_SHORT).show()
         }
-        // This is a fake function, the real one is in MilestoneDetailActivity
-        // loadPreviousUploads()
     }
 
     private fun openFileChooser() {
@@ -103,38 +98,5 @@ class FileUploadsActivity : AppCompatActivity() {
         layout.addView(icon)
         layout.addView(fileNameText)
         previousUploadsLayout.addView(layout)
-    }
-
-    private fun loadPreviousUploads() {
-        val fakeFiles = listOf(
-            "Research_Report.pdf" to R.drawable.ic_pdf,
-            "Literature_Review.docx" to R.drawable.ic_doc,
-            "Presentation.mp4" to R.drawable.ic_mp4,
-        )
-        for ((fileName, iconRes) in fakeFiles) {
-            val layout = LinearLayout(this).apply {
-                orientation = LinearLayout.HORIZONTAL
-                setPadding(16, 12, 16, 12)
-                setBackgroundResource(R.drawable.file_card_bg)
-                val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 100)
-                layoutParams = params
-                gravity = android.view.Gravity.CENTER_VERTICAL
-            }
-
-            val icon = ImageView(this).apply {
-                setImageResource(iconRes)
-                layoutParams = LinearLayout.LayoutParams(80, 80).apply { marginEnd = 32 }
-                contentDescription = "File Icon"
-            }
-
-            val fileNameText = TextView(this).apply {
-                text = fileName
-                textSize = 16f
-            }
-
-            layout.addView(icon)
-            layout.addView(fileNameText)
-            previousUploadsLayout.addView(layout)
-        }
     }
 }

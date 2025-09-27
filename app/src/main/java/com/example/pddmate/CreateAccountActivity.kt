@@ -79,7 +79,7 @@ class CreateAccountActivity : AppCompatActivity() {
 
         val gson = GsonBuilder().setLenient().create()
         api = Retrofit.Builder()
-            .baseUrl("http://10.213.74.64/pdd_dashboard/")
+            .baseUrl("http://192.168.31.109/pdd_dashboard/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiSignup::class.java)

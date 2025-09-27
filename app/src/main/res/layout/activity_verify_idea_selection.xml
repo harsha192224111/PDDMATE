@@ -77,6 +77,7 @@
                         android:layout_marginStart="8dp">
 
                         <TextView
+                            android:id="@+id/studentNameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/developer_name"
@@ -84,6 +85,7 @@
                             android:textSize="14sp"/>
 
                         <TextView
+                            android:id="@+id/studentIdTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/developer_id"

@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Back Arrow -->
         <ImageView
             android:id="@+id/backArrow"
             android:layout_width="24dp"
@@ -22,7 +21,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <!-- Title -->
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
@@ -36,7 +34,6 @@
             app:layout_constraintBottom_toBottomOf="@id/backArrow"
             android:layout_marginStart="16dp"/>
 
-        <!-- Top Card for User Info -->
         <androidx.cardview.widget.CardView
             android:id="@+id/topCard"
             android:layout_width="0dp"
@@ -77,6 +74,7 @@
                         android:layout_marginStart="8dp">
 
                         <TextView
+                            android:id="@+id/studentNameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/developer_name"
@@ -84,6 +82,7 @@
                             android:textSize="14sp"/>
 
                         <TextView
+                            android:id="@+id/studentIdTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/developer_id"
@@ -127,7 +126,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Submitted Files Label -->
         <TextView
             android:id="@+id/submittedFilesLabel"
             android:layout_width="wrap_content"
@@ -140,150 +138,16 @@
             app:layout_constraintTop_toBottomOf="@id/topCard"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <!-- FileCard1 -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/fileCard1"
+        <LinearLayout
+            android:id="@+id/fileListLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="1dp"
+            android:orientation="vertical"
             android:layout_marginTop="14dp"
             app:layout_constraintTop_toBottomOf="@id/submittedFilesLabel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@color/field_bg"
-                android:padding="8dp"
-                >
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/file_icon"
-                    android:src="@drawable/ic_pdf"
-                    />
-
-                <TextView
-                    android:id="@+id/fileName1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/file1"
-                    android:textColor="@color/title"
-                    android:textSize="14sp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"/>
-
-                <ImageView
-                    android:id="@+id/downloadFile1"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:contentDescription="@string/download_icon"
-                    android:src="@drawable/ic_download"
-                    />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- FileCard2 -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/fileCard2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="1dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/fileCard1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@color/field_bg"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/file_icon"
-                    android:src="@drawable/ic_doc"
-                    />
-
-                <TextView
-                    android:id="@+id/fileName2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/file2"
-                    android:textColor="@color/title"
-                    android:textSize="14sp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"/>
-
-                <ImageView
-                    android:id="@+id/downloadFile2"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:contentDescription="@string/download_icon"
-                    android:src="@drawable/ic_download"
-                    />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- FileCard3 -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/fileCard3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="1dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/fileCard2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@color/field_bg"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/file_icon"
-                    android:src="@drawable/ic_mp4"
-                    />
-
-                <TextView
-                    android:id="@+id/fileName3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/file3"
-                    android:textColor="@color/title"
-                    android:textSize="14sp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"/>
-
-                <ImageView
-                    android:id="@+id/downloadFile3"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:contentDescription="@string/download_icon"
-                    android:src="@drawable/ic_download"
-                    />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Bottom Buttons -->
         <LinearLayout
             android:id="@+id/buttonLayout"
             android:layout_width="match_parent"
@@ -291,7 +155,7 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_marginTop="36dp"
-            app:layout_constraintTop_toBottomOf="@id/fileCard3"
+            app:layout_constraintTop_toBottomOf="@id/fileListLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 

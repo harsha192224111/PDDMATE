@@ -65,12 +65,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <!-- Name and ID Row -->
                 <LinearLayout
                     android:id="@+id/developerInfo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="8dp"
@@ -92,16 +92,18 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/studentNameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/developer_name"
+                            android:text="Student Name"
                             android:textColor="@color/title"
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/studentIdTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/developer_id"
+                            android:text="Registration No"
                             android:textColor="@color/subtitle"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -156,13 +158,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_margin="12dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/card_bg"
                     android:orientation="vertical"
-                    android:padding="12dp"
-                    >
+                    android:padding="12dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -178,6 +180,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
             <ImageView
                 android:id="@+id/step1_icon"
                 android:layout_width="24dp"
@@ -204,6 +207,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/step1_card"
                 android:layout_margin="12dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -225,6 +229,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
             <ImageView
                 android:id="@+id/step2_icon"
                 android:layout_width="24dp"
@@ -251,6 +256,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/step2_card"
                 android:layout_margin="12dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -272,6 +278,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
             <ImageView
                 android:id="@+id/step3_icon"
                 android:layout_width="24dp"
@@ -298,6 +305,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/step3_card"
                 android:layout_margin="12dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -319,6 +327,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
             <ImageView
                 android:id="@+id/step4_icon"
                 android:layout_width="24dp"
@@ -345,6 +354,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/step4_card"
                 android:layout_margin="12dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -366,6 +376,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
             <ImageView
                 android:id="@+id/step5_icon"
                 android:layout_width="24dp"
@@ -392,6 +403,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/step5_card"
                 android:layout_margin="12dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -413,6 +425,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
             <ImageView
                 android:id="@+id/step6_icon"
                 android:layout_width="24dp"

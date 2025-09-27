@@ -39,7 +39,7 @@ class SlotDetailsActivity : AppCompatActivity() {
         val requestBody = reqJson.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
         val request = Request.Builder()
-            .url("http://10.213.74.64/pdd_dashboard/get_project_details.php")
+            .url("http://192.168.31.109/pdd_dashboard/get_project_details.php")
             .post(requestBody)
             .build()
         client.newCall(request).enqueue(object : Callback {
@@ -66,7 +66,7 @@ class SlotDetailsActivity : AppCompatActivity() {
 
     private fun loadStudents() {
         val client = OkHttpClient()
-        val url = "http://10.213.74.64/pdd_dashboard/get_project_students.php?project_id=$projectId"
+        val url = "http://192.168.31.109/pdd_dashboard/get_project_students.php?project_id=$projectId"
         val request = Request.Builder().url(url).get().build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -95,7 +95,7 @@ class SlotDetailsActivity : AppCompatActivity() {
 
     private fun loadStudentRequests() {
         val client = OkHttpClient()
-        val url = "http://10.213.74.64/pdd_dashboard/get_project_requests.php?project_id=$projectId"
+        val url = "http://192.168.31.109/pdd_dashboard/get_project_requests.php?project_id=$projectId"
         val request = Request.Builder().url(url).get().build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -138,7 +138,7 @@ class SlotDetailsActivity : AppCompatActivity() {
             .add("action", action)
             .build()
         val request = Request.Builder()
-            .url("http://10.213.74.64/pdd_dashboard/approve_enrollment.php")
+            .url("http://192.168.31.109/pdd_dashboard/approve_enrollment.php")
             .post(formBody)
             .build()
         client.newCall(request).enqueue(object : Callback {

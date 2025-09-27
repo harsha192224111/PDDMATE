@@ -51,11 +51,18 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     // OkHttp (required for asRequestBody and toMediaTypeOrNull extensions)
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
 
     // Material Components (ONE latest version only)
     implementation("com.google.android.material:material:1.6.0")
 
     // Updated ConstraintLayout
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // OkHttp for networking
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    // Additional dependencies from the provided code snippets
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.cardview:cardview:1.0.0")
 }
