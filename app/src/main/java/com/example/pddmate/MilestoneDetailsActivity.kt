@@ -1,7 +1,6 @@
 package com.example.pddmate
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -39,8 +38,6 @@ class MilestoneDetailActivity : AppCompatActivity() {
     private var userId: String? = null
     private lateinit var apiService: ApiService
     private val uploadedFileNames = mutableSetOf<String>()
-
-    // tracks whether user clicked "Clear" before selecting new files -> informs server to replace DB entries
     private var clearedSelection = false
 
     interface ApiService {
@@ -51,7 +48,7 @@ class MilestoneDetailActivity : AppCompatActivity() {
             @Part("project_id") projectId: RequestBody,
             @Part("milestone_index") milestoneIndex: RequestBody,
             @Part("user_id") userId: RequestBody,
-            @Part("replace_existing") replaceExisting: RequestBody? // optional
+            @Part("replace_existing") replaceExisting: RequestBody?
         ): Call<ApiResponse>
 
         @FormUrlEncoded
@@ -68,11 +65,13 @@ class MilestoneDetailActivity : AppCompatActivity() {
         val message: String,
         val responses: List<FileUploadResponse>? = null
     )
+
     data class FileUploadResponse(
         val file: String,
         val success: Boolean,
         val message: String
     )
+
     data class FilesResponse(
         val success: Boolean,
         val message: String,
@@ -105,12 +104,12 @@ class MilestoneDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_file_uploads)
-
         val milestoneType = intent.getStringExtra("MILESTONE_TYPE")
         stepIndex = intent.getIntExtra("STEP_INDEX", -1)
         projectId = intent.getIntExtra("PROJECT_ID", -1)
-        userId = intent.getStringExtra("USER_ID") // Get USER_ID from Intent
+        userId = intent.getStringExtra("USER_ID") // Get userId from Intent
 
+        // Initialize Retrofit with lenient Gson
         val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.31.109/pdd_dashboard/")
@@ -245,7 +244,7 @@ class MilestoneDetailActivity : AppCompatActivity() {
                     val body = response.body()
                     if (body != null && body.success) {
                         body.files.forEach {
-                            val name = it["file_name"] ?: it["file_name".toString()]
+                            val name = it["file_name"]
                             if (name != null) uploadedFileNames.add(name)
                         }
                     } else {

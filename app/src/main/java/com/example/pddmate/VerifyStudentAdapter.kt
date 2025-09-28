@@ -16,6 +16,7 @@ class VerifyStudentAdapter(
     inner class StudentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val studentNameTextView: TextView = itemView.findViewById(R.id.studentName)
         val studentUserIdTextView: TextView = itemView.findViewById(R.id.studentUserId)
+
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition

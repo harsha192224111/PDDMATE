@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+// Data Models
 data class Student(
     val user_id: String,
     val name: String,
@@ -24,11 +25,13 @@ data class StudentListResponse(
     val data: List<Student>
 )
 
+// Retrofit API Interface
 interface StudentProgressApi {
     @GET("get_project_students_with_slot.php")
     fun getProjectStudents(@Query("project_id") projectId: String): Call<StudentListResponse>
 }
 
+// Activity
 class StudentProgressVerificationActivity : AppCompatActivity() {
 
     private lateinit var studentsRecyclerView: RecyclerView
@@ -42,12 +45,17 @@ class StudentProgressVerificationActivity : AppCompatActivity() {
 
         studentsRecyclerView = findViewById(R.id.studentsRecyclerView)
         val backArrow: ImageView = findViewById(R.id.backArrow)
+        val projectTitleTextView: TextView = findViewById(R.id.projectTitle)
 
         studentsRecyclerView.layoutManager = LinearLayoutManager(this)
         backArrow.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
         projectId = intent.getStringExtra("project_id")
         projectTitle = intent.getStringExtra("project_title")
+
+        if (projectTitle != null) {
+            projectTitleTextView.text = projectTitle
+        }
 
         if (projectId != null) {
             fetchStudents(projectId!!)
@@ -97,7 +105,7 @@ class StudentProgressVerificationActivity : AppCompatActivity() {
         when (student.slot_type.uppercase()) {
             "APP" -> {
                 val intent = Intent(this, VerifyProjectMilestoneAppActivity::class.java)
-                intent.putExtra("student_user_id", student.user_id) // pass actual user_id of student
+                intent.putExtra("student_user_id", student.user_id)
                 intent.putExtra("student_name", student.name)
                 intent.putExtra("project_id", projectIdInt)
                 intent.putExtra("project_title", projectTitle)

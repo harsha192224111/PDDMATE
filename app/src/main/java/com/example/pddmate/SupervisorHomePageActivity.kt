@@ -59,7 +59,7 @@ class SupervisorHomePageActivity : AppCompatActivity() {
                     true
                 }
                 /*R.id.menu_verify_progress -> {
-                    startActivity(Intent(this, VerifyProgressAllActivity::class.java))
+                    startActivity(Intent(this, VerifyProgressActivity::class.java))
                     true
                 }
                 R.id.menu_pdd_analytics -> {

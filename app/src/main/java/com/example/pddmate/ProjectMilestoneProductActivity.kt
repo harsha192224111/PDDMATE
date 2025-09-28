@@ -10,12 +10,16 @@ class ProjectMilestoneProductActivity : AppCompatActivity() {
 
     private lateinit var steps: List<ConstraintLayout>
     private lateinit var stepIcons: List<ImageView>
+    private var userId: String? = null
+    private var projectId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project_milestone_product)
 
-        // Initialize step containers and icons all with ic_phase initially
+        userId = intent.getStringExtra("USER_ID")
+        projectId = intent.getIntExtra("PROJECT_ID", -1)
+
         stepIcons = listOf(
             findViewById(R.id.step1_icon),
             findViewById(R.id.step2_icon),
@@ -39,7 +43,6 @@ class ProjectMilestoneProductActivity : AppCompatActivity() {
             imageView.setImageResource(phaseIconRes)
         }
 
-        // Set click listeners on steps
         steps.forEachIndexed { index, layout ->
             layout.setOnClickListener {
                 openMilestoneDetail(index)
@@ -48,16 +51,21 @@ class ProjectMilestoneProductActivity : AppCompatActivity() {
     }
 
     private fun openMilestoneDetail(stepIndex: Int) {
+        if (userId == null || projectId == -1) {
+            // Handle case where user ID or project ID is not available
+            return
+        }
+
         val intent: Intent
         if (stepIndex == 0) {
-            // "Idea Selection" is the first step (index 0)
             intent = Intent(this, IdeaSelectionActivity::class.java)
         } else {
             intent = Intent(this, MilestoneDetailActivity::class.java)
             intent.putExtra("MILESTONE_TYPE", "PRODUCT")
             intent.putExtra("STEP_INDEX", stepIndex)
         }
-        intent.putExtra("PROJECT_ID", 1) // Pass a placeholder project ID
+        intent.putExtra("PROJECT_ID", projectId) // Pass the correct project ID
+        intent.putExtra("USER_ID", userId)
         startActivity(intent)
     }
 }

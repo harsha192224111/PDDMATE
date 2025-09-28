@@ -30,7 +30,7 @@ class VerifyIdeaSelectionActivity : AppCompatActivity() {
     private var projectId: Int = -1
     private var studentName: String? = null
     private var milestoneTitle: String? = null
-    private var studentUserId: String? = null // Correctly store the student's ID
+    private var studentUserId: String? = null
 
     // --- Data Models ---
     data class IdeaData(
@@ -44,9 +44,10 @@ class VerifyIdeaSelectionActivity : AppCompatActivity() {
         val data: IdeaData?
     )
 
+    // --- Retrofit API Service for this activity ---
     interface ApiService {
         @FormUrlEncoded
-        @POST("verify_idea.php") // Using the correct endpoint that gets idea for a user
+        @POST("verify_idea.php")
         fun getIdea(
             @Field("project_id") projectId: Int,
             @Field("user_id") userId: String
@@ -59,7 +60,7 @@ class VerifyIdeaSelectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verify_idea_selection)
 
-        // --- Retrofit ---
+        // --- Retrofit Setup ---
         val retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.31.109/pdd_dashboard/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -68,7 +69,7 @@ class VerifyIdeaSelectionActivity : AppCompatActivity() {
 
         // --- Get intent extras ---
         projectId = intent.getIntExtra("project_id", -1)
-        studentUserId = intent.getStringExtra("student_user_id") // Use this ID for the API call
+        studentUserId = intent.getStringExtra("student_user_id")
         studentName = intent.getStringExtra("student_name")
         milestoneTitle = intent.getStringExtra("MILESTONE_TITLE")
 
@@ -96,13 +97,13 @@ class VerifyIdeaSelectionActivity : AppCompatActivity() {
         }
 
         acceptButton.setOnClickListener {
-            Toast.makeText(this, "Idea accepted!", Toast.LENGTH_SHORT).show()
             // TODO: Call API to update approval status
+            Toast.makeText(this, "Idea accepted!", Toast.LENGTH_SHORT).show()
         }
 
         rejectButton.setOnClickListener {
-            Toast.makeText(this, "Idea rejected.", Toast.LENGTH_SHORT).show()
             // TODO: Call API to update rejection status
+            Toast.makeText(this, "Idea rejected.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -124,7 +125,7 @@ class VerifyIdeaSelectionActivity : AppCompatActivity() {
                 } else {
                     projectTitleValue.text = "Error fetching idea."
                     projectDescValue.text = ""
-                    Toast.makeText(this@VerifyIdeaSelectionActivity, "Server error.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@VerifyIdeaSelectionActivity, "Server error: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
             }
 

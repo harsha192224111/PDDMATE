@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.GsonBuilder
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -49,14 +50,16 @@ class IdeaSelectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_idea_selection)
 
+        // Initialize Retrofit with lenient Gson
+        val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.31.109/pdd_dashboard/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         apiService = retrofit.create(ApiService::class.java)
 
         projectId = intent.getIntExtra("PROJECT_ID", -1)
-        userId = intent.getStringExtra("USER_ID") // Get USER_ID from Intent
+        userId = intent.getStringExtra("USER_ID")
 
         backArrow = findViewById(R.id.backArrow)
         projectTitleInput = findViewById(R.id.projectTitleInput)

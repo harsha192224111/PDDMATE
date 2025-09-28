@@ -38,13 +38,14 @@ class VerifyFileUploadsActivity : AppCompatActivity() {
 
     private var projectId: Int = -1
     private var stepIndex: Int = -1
-    private var studentUserId: String? = null // Correct variable to hold the student's user ID
+    private var studentUserId: String? = null
     private var studentName: String? = null
     private var milestoneTitle: String? = null
     private var projectTitle: String? = null
 
     private lateinit var apiService: ApiService
 
+    // Data Models
     data class FileItem(val fileName: String, val filePath: String)
     data class FilesResponse(
         val success: Boolean,
@@ -53,6 +54,7 @@ class VerifyFileUploadsActivity : AppCompatActivity() {
         val project_title: String? = null
     )
 
+    // Retrofit API Interface
     interface ApiService {
         @FormUrlEncoded
         @POST("verify_files.php")
@@ -67,19 +69,22 @@ class VerifyFileUploadsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verify_file_uploads)
 
+        // Retrofit Setup
         val retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.31.109/pdd_dashboard/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         apiService = retrofit.create(ApiService::class.java)
 
+        // Get intent extras
         projectId = intent.getIntExtra("project_id", -1)
         stepIndex = intent.getIntExtra("STEP_INDEX", -1)
-        studentUserId = intent.getStringExtra("student_user_id") // Correctly retrieve the student's user ID
+        studentUserId = intent.getStringExtra("student_user_id")
         studentName = intent.getStringExtra("student_name")
         milestoneTitle = intent.getStringExtra("MILESTONE_TITLE")
         projectTitle = intent.getStringExtra("project_title")
 
+        // Bind Views
         backArrow = findViewById(R.id.backArrow)
         milestoneTitleTextView = findViewById(R.id.title)
         studentNameTextView = findViewById(R.id.studentNameTextView)
@@ -161,7 +166,7 @@ class VerifyFileUploadsActivity : AppCompatActivity() {
 
     private fun addNoFilesView() {
         val noFilesTextView = TextView(this).apply {
-            text = getString(R.string.no_files_uploaded_for_this_milestone)
+            text = "No files uploaded for this milestone."
             gravity = View.TEXT_ALIGNMENT_CENTER
             setPadding(0, 32, 0, 32)
         }
