@@ -1,8 +1,8 @@
 package com.example.pddmate
 
-import android.content.Context
-import android.content.Intent
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -23,6 +23,7 @@ class IdeaSelectionActivity : AppCompatActivity() {
     private lateinit var apiService: ApiService
     private var projectId: Int = -1
     private var userId: String? = null
+    private var milestoneType: String? = null
 
     interface ApiService {
         @FormUrlEncoded
@@ -38,8 +39,17 @@ class IdeaSelectionActivity : AppCompatActivity() {
         @POST("get_idea.php")
         fun getIdea(
             @Field("project_id") projectId: Int,
-            @Field("user_id") userId: String
+            @Field("user_id") String: String
         ): Call<IdeaResponse>
+
+        @FormUrlEncoded
+        @POST("set_milestone_phase.php")
+        fun setMilestonePhase(
+            @Field("project_id") projectId: Int,
+            @Field("user_id") userId: String,
+            @Field("milestone_index") milestoneIndex: Int,
+            @Field("phase") phase: String
+        ): Call<ApiResponse>
     }
 
     data class ApiResponse(val success: Boolean, val message: String)
@@ -50,7 +60,6 @@ class IdeaSelectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_idea_selection)
 
-        // Initialize Retrofit with lenient Gson
         val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.31.109/pdd_dashboard/")
@@ -60,6 +69,7 @@ class IdeaSelectionActivity : AppCompatActivity() {
 
         projectId = intent.getIntExtra("PROJECT_ID", -1)
         userId = intent.getStringExtra("USER_ID")
+        milestoneType = intent.getStringExtra("MILESTONE_TYPE")
 
         backArrow = findViewById(R.id.backArrow)
         projectTitleInput = findViewById(R.id.projectTitleInput)
@@ -98,20 +108,29 @@ class IdeaSelectionActivity : AppCompatActivity() {
         val call = apiService.getIdea(projectId, userId)
         call.enqueue(object : Callback<IdeaResponse> {
             override fun onResponse(call: Call<IdeaResponse>, response: Response<IdeaResponse>) {
-                if (response.isSuccessful && response.body()?.success == true) {
-                    val ideaData = response.body()?.data
-                    if (ideaData != null) {
-                        projectTitleInput.setText(ideaData.title)
-                        projectDescInput.setText(ideaData.description)
-                        Toast.makeText(this@IdeaSelectionActivity, "Previous idea loaded.", Toast.LENGTH_SHORT).show()
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()
+                    if (body?.success == true && body.data != null) {
+                        projectTitleInput.setText(body.data.title)
+                        projectDescInput.setText(body.data.description)
+                        Toast.makeText(
+                            this@IdeaSelectionActivity,
+                            "Previous idea loaded.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        projectTitleInput.setText("")
+                        projectDescInput.setText("")
                     }
                 } else {
                     projectTitleInput.setText("")
                     projectDescInput.setText("")
                 }
             }
+
             override fun onFailure(call: Call<IdeaResponse>, t: Throwable) {
-                // Log error for debugging
+                Log.e("IdeaSelectionActivity", "Error fetching idea", t)
+                Toast.makeText(this@IdeaSelectionActivity, "Network error fetching previous idea.", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -125,10 +144,10 @@ class IdeaSelectionActivity : AppCompatActivity() {
                 submitBtn.isEnabled = true
                 submitBtn.text = "Submit for Review"
                 if (response.isSuccessful && response.body()?.success == true) {
-                    Toast.makeText(this@IdeaSelectionActivity, "Idea submitted successfully!", Toast.LENGTH_SHORT).show()
-                    finish()
+                    setMilestonePhase(projectId, userId, 0, "pending")
                 } else {
-                    Toast.makeText(this@IdeaSelectionActivity, "Submission failed: ${response.body()?.message}", Toast.LENGTH_LONG).show()
+                    val msg = response.body()?.message ?: "Unknown error"
+                    Toast.makeText(this@IdeaSelectionActivity, "Submission failed: $msg", Toast.LENGTH_LONG).show()
                 }
             }
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
@@ -137,5 +156,28 @@ class IdeaSelectionActivity : AppCompatActivity() {
                 Toast.makeText(this@IdeaSelectionActivity, "Network error: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    private fun setMilestonePhase(projectId: Int, userId: String, milestoneIndex: Int, phase: String) {
+        apiService.setMilestonePhase(projectId, userId, milestoneIndex, phase)
+            .enqueue(object : Callback<ApiResponse> {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        Toast.makeText(this@IdeaSelectionActivity, "Idea submitted for review!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.e("IdeaSelectionActivity", "Failed to update milestone phase.")
+                        Toast.makeText(this@IdeaSelectionActivity, "Idea submitted, but failed to update status.", Toast.LENGTH_LONG).show()
+                    }
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
+
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                    Log.e("IdeaSelectionActivity", "Network error updating milestone phase: ${t.message}")
+                    Toast.makeText(this@IdeaSelectionActivity, "Idea submitted, but failed to update status.", Toast.LENGTH_LONG).show()
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
+            })
     }
 }

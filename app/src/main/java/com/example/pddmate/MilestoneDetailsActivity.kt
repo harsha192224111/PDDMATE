@@ -58,6 +58,15 @@ class MilestoneDetailActivity : AppCompatActivity() {
             @Field("milestone_index") milestoneIndex: Int,
             @Field("user_id") userId: String
         ): Call<FilesResponse>
+
+        @FormUrlEncoded
+        @POST("set_milestone_phase.php")
+        fun setMilestonePhase(
+            @Field("project_id") projectId: Int,
+            @Field("user_id") userId: String,
+            @Field("milestone_index") milestoneIndex: Int,
+            @Field("phase") phase: String
+        ): Call<ApiResponse>
     }
 
     data class ApiResponse(
@@ -107,9 +116,8 @@ class MilestoneDetailActivity : AppCompatActivity() {
         val milestoneType = intent.getStringExtra("MILESTONE_TYPE")
         stepIndex = intent.getIntExtra("STEP_INDEX", -1)
         projectId = intent.getIntExtra("PROJECT_ID", -1)
-        userId = intent.getStringExtra("USER_ID") // Get userId from Intent
+        userId = intent.getStringExtra("USER_ID")
 
-        // Initialize Retrofit with lenient Gson
         val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.31.109/pdd_dashboard/")
@@ -131,7 +139,7 @@ class MilestoneDetailActivity : AppCompatActivity() {
         uploadSection.setOnClickListener { openFileChooser() }
 
         submitButton.setOnClickListener {
-            if (selectedFiles.isNotEmpty()) {
+            if (selectedFiles.isNotEmpty() || clearedSelection) {
                 if (!userId.isNullOrEmpty()) {
                     uploadFiles(projectId, stepIndex, userId!!, selectedFiles)
                 } else {
@@ -269,11 +277,16 @@ class MilestoneDetailActivity : AppCompatActivity() {
     private fun uploadFiles(projectId: Int, stepIndex: Int, userId: String, fileUris: List<Uri>) {
         submitButton.isEnabled = false
         submitButton.text = getString(R.string.uploading)
-        val fileParts = mutableListOf<MultipartBody.Part>()
 
-        for (uri in fileUris) {
+        val filesToUpload = if (clearedSelection) selectedFiles else fileUris.filter { uri ->
             val fileName = getFileNameFromUri(uri)
-            if (fileName == null || uploadedFileNames.contains(fileName)) {
+            fileName != null && !uploadedFileNames.contains(fileName)
+        }
+
+        val fileParts = mutableListOf<MultipartBody.Part>()
+        for (uri in filesToUpload) {
+            val fileName = getFileNameFromUri(uri)
+            if (fileName == null) {
                 continue
             }
             val file = getFileFromUri(uri, fileName)
@@ -287,7 +300,7 @@ class MilestoneDetailActivity : AppCompatActivity() {
             fileParts.add(part)
         }
 
-        if (fileParts.isEmpty()) {
+        if (fileParts.isEmpty() && !clearedSelection) {
             Toast.makeText(this, getString(R.string.no_new_files_to_upload), Toast.LENGTH_SHORT).show()
             submitButton.isEnabled = true
             submitButton.text = getString(R.string.submit_for_review)
@@ -312,10 +325,7 @@ class MilestoneDetailActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null && body.success) {
-                        Toast.makeText(this@MilestoneDetailActivity, getString(R.string.files_submitted_successfully), Toast.LENGTH_SHORT).show()
-                        fetchUploadedFiles(projectId, stepIndex, userId)
-                        selectedFiles.clear()
-                        clearedSelection = false
+                        setMilestonePhase(projectId, stepIndex, userId, "pending")
                     } else {
                         val message = body?.message ?: response.errorBody()?.string() ?: getString(R.string.unknown_error)
                         Toast.makeText(this@MilestoneDetailActivity, getString(R.string.upload_failed, message), Toast.LENGTH_LONG).show()
@@ -332,6 +342,29 @@ class MilestoneDetailActivity : AppCompatActivity() {
                 submitButton.text = getString(R.string.submit_for_review)
                 Log.e("MilestoneDetailActivity", "Network error: ${t.message}", t)
                 Toast.makeText(this@MilestoneDetailActivity, getString(R.string.network_error, t.message), Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun setMilestonePhase(projectId: Int, stepIndex: Int, userId: String, phase: String) {
+        apiService.setMilestonePhase(projectId, userId, stepIndex, phase).enqueue(object : Callback<ApiResponse> {
+            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                if (response.isSuccessful && response.body()?.success == true) {
+                    Toast.makeText(this@MilestoneDetailActivity, getString(R.string.files_submitted_successfully), Toast.LENGTH_SHORT).show()
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                } else {
+                    Log.e("MilestoneDetailActivity", "Failed to update milestone phase.")
+                    Toast.makeText(this@MilestoneDetailActivity, "Files submitted, but failed to update status.", Toast.LENGTH_LONG).show()
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
+            }
+            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                Log.e("MilestoneDetailActivity", "Network error updating milestone phase: ${t.message}")
+                Toast.makeText(this@MilestoneDetailActivity, "Files submitted, but failed to update status.", Toast.LENGTH_LONG).show()
+                setResult(Activity.RESULT_OK)
+                finish()
             }
         })
     }

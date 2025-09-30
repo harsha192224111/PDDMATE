@@ -280,18 +280,18 @@
     <string name="step_completed">Milestone Completed</string>
     <string name="step_pending">Milestone Pending</string>
     <string name="step_error">Milestone Error/Blocked</string>
-    <string name="step1_title">Idea Selection</string>
-    <string name="step1_desc">Project Concept</string>
-    <string name="step2_title">UI / UX Design</string>
-    <string name="step2_desc">Visual Design</string>
-    <string name="step3_title">Frontend Development</string>
-    <string name="step3_desc">User Interface</string>
-    <string name="step4_title">Backend Development</string>
-    <string name="step4_desc">Server side Implementation</string>
-    <string name="step5_title">Integration</string>
-    <string name="step5_desc">Connecting front-end &amp; back-end</string>
-    <string name="step6_title">Documentation</string>
-    <string name="step6_desc">Document Submission</string>
+    <string name="step0_title">Idea Selection</string>
+    <string name="step0_desc">Project Concept</string>
+    <string name="step1_title">UI / UX Design</string>
+    <string name="step1_desc">Visual Design</string>
+    <string name="step2_title">Frontend Development</string>
+    <string name="step2_desc">User Interface</string>
+    <string name="step3_title">Backend Development</string>
+    <string name="step3_desc">Server side Implementation</string>
+    <string name="step4_title">Integration</string>
+    <string name="step4_desc">Connecting front-end &amp; back-end</string>
+    <string name="step5_title">Documentation</string>
+    <string name="step5_desc">Document Submission</string>
 
     <!-- General -->
 
@@ -468,6 +468,31 @@
     <string name="file_placeholder">File name</string>
     <string name="idea_verification">idea verification</string>
     <string name="no_files_uploaded_for_this_milestone">no file uploads for this milestone</string>
+
+
+
+    <string name="step_status_icon">Step Status Icon</string>
+
+
+    <string name="step0_title_prod">Idea Selection</string>
+    <string name="step0_desc_prod">Describe your product concept, target market, and key features.</string>
+    <string name="step1_title_prod">Market Research</string>
+    <string name="step1_desc_prod">Provide analysis of the market, competition, and customer needs.</string>
+    <string name="step2_title_prod">Physical Design</string>
+    <string name="step2_desc_prod">Upload 2D/3D CAD models, schematics, and material specifications.</string>
+    <string name="step3_title_prod">Prototyping</string>
+    <string name="step3_desc_prod">Submit documentation on the physical prototype, including photos or videos.</string>
+    <string name="step4_title_prod">Testing &amp; Validation</string>
+    <string name="step4_desc_prod">Provide test reports, feedback, and validation results.</string>
+    <string name="step5_title_prod">Manufacturing &amp; Logistics</string>
+    <string name="step5_desc_prod">Submit the manufacturing plan, supply chain details, and cost analysis.</string>
+
+
+    <string name="student_name">Student Name</string>
+    <string name="registration_no">Registration No</string>
+
+    <string name="clear_button">Clear</string>
+
 
 
 

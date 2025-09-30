@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Header -->
         <ImageView
             android:id="@+id/backArrow"
             android:layout_width="24dp"
@@ -35,7 +34,6 @@
             app:layout_constraintStart_toEndOf="@id/backArrow"
             app:layout_constraintTop_toTopOf="@id/backArrow" />
 
-        <!-- Top Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/topCard"
             android:layout_width="0dp"
@@ -65,7 +63,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <!-- Name and ID Row -->
                 <LinearLayout
                     android:id="@+id/developerInfo"
                     android:layout_width="0dp"
@@ -124,7 +121,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topCard" />
 
-        <!-- Timeline Layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/timelineLayout"
             android:layout_width="match_parent"
@@ -134,50 +130,66 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sectionTitle">
 
-            <!-- Continuous vertical line -->
             <View
                 android:id="@+id/timelineLine"
                 android:layout_width="2dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="28dp"
                 android:background="@color/line_gray"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Step 1 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/step0_card"
+                style="@style/MilestoneCardStyle"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/timelineLine"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout style="@style/MilestoneContentLayout">
+
+                    <TextView
+                        style="@style/MilestoneTitleStyle"
+                        android:text="@string/step0_title" />
+
+                    <TextView
+                        style="@style/MilestoneDescStyle"
+                        android:text="@string/step0_desc" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:id="@+id/step0_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:contentDescription="@string/step_status_icon"
+                android:src="@drawable/ic_phase"
+                app:layout_constraintBottom_toBottomOf="@id/step0_card"
+                app:layout_constraintEnd_toStartOf="@id/step0_card"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/step0_card" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/step1_card"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:layout_constraintStart_toEndOf="@id/timelineLine"
+                style="@style/MilestoneCardStyle"
+                android:layout_marginTop="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="12dp">
+                app:layout_constraintStart_toEndOf="@id/timelineLine"
+                app:layout_constraintTop_toBottomOf="@id/step0_card">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/card_bg"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                <LinearLayout style="@style/MilestoneContentLayout">
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step1_title"
-                        android:textColor="@color/title"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        style="@style/MilestoneTitleStyle"
+                        android:text="@string/step1_title" />
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step1_desc"
-                        android:textColor="@color/subtitle"
-                        android:textSize="14sp" />
+                        style="@style/MilestoneDescStyle"
+                        android:text="@string/step1_desc" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -186,47 +198,30 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
-                android:contentDescription="@string/step_completed"
+                android:contentDescription="@string/step_status_icon"
                 android:src="@drawable/ic_phase"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/step1_card"
-                app:layout_constraintEnd_toStartOf="@id/step1_card"
                 app:layout_constraintBottom_toBottomOf="@id/step1_card"
-                app:layout_constraintHorizontal_bias="0" />
-
-            <!-- Step 2 -->
+                app:layout_constraintEnd_toStartOf="@id/step1_card"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/step1_card" />
             <androidx.cardview.widget.CardView
                 android:id="@+id/step2_card"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:layout_constraintStart_toEndOf="@id/timelineLine"
+                style="@style/MilestoneCardStyle"
+                android:layout_marginTop="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/step1_card"
-                android:layout_margin="12dp">
+                app:layout_constraintStart_toEndOf="@id/timelineLine"
+                app:layout_constraintTop_toBottomOf="@id/step1_card">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/card_bg"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                <LinearLayout style="@style/MilestoneContentLayout">
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step2_title"
-                        android:textColor="@color/title"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        style="@style/MilestoneTitleStyle"
+                        android:text="@string/step2_title" />
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step2_desc"
-                        android:textColor="@color/subtitle"
-                        android:textSize="14sp" />
+                        style="@style/MilestoneDescStyle"
+                        android:text="@string/step2_desc" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -235,47 +230,31 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
-                android:contentDescription="@string/step_completed"
+                android:contentDescription="@string/step_status_icon"
                 android:src="@drawable/ic_phase"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/step2_card"
-                app:layout_constraintEnd_toStartOf="@id/step2_card"
                 app:layout_constraintBottom_toBottomOf="@id/step2_card"
-                app:layout_constraintHorizontal_bias="0" />
+                app:layout_constraintEnd_toStartOf="@id/step2_card"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/step2_card" />
 
-            <!-- Step 3 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/step3_card"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:layout_constraintStart_toEndOf="@id/timelineLine"
+                style="@style/MilestoneCardStyle"
+                android:layout_marginTop="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/step2_card"
-                android:layout_margin="12dp">
+                app:layout_constraintStart_toEndOf="@id/timelineLine"
+                app:layout_constraintTop_toBottomOf="@id/step2_card">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/card_bg"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                <LinearLayout style="@style/MilestoneContentLayout">
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step3_title"
-                        android:textColor="@color/title"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        style="@style/MilestoneTitleStyle"
+                        android:text="@string/step3_title" />
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step3_desc"
-                        android:textColor="@color/subtitle"
-                        android:textSize="14sp" />
+                        style="@style/MilestoneDescStyle"
+                        android:text="@string/step3_desc" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -284,47 +263,31 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
-                android:contentDescription="@string/step_completed"
+                android:contentDescription="@string/step_status_icon"
                 android:src="@drawable/ic_phase"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/step3_card"
-                app:layout_constraintEnd_toStartOf="@id/step3_card"
                 app:layout_constraintBottom_toBottomOf="@id/step3_card"
-                app:layout_constraintHorizontal_bias="0" />
+                app:layout_constraintEnd_toStartOf="@id/step3_card"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/step3_card" />
 
-            <!-- Step 4 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/step4_card"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:layout_constraintStart_toEndOf="@id/timelineLine"
+                style="@style/MilestoneCardStyle"
+                android:layout_marginTop="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/step3_card"
-                android:layout_margin="12dp">
+                app:layout_constraintStart_toEndOf="@id/timelineLine"
+                app:layout_constraintTop_toBottomOf="@id/step3_card">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/card_bg"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                <LinearLayout style="@style/MilestoneContentLayout">
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step4_title"
-                        android:textColor="@color/title"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        style="@style/MilestoneTitleStyle"
+                        android:text="@string/step4_title" />
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step4_desc"
-                        android:textColor="@color/subtitle"
-                        android:textSize="14sp" />
+                        style="@style/MilestoneDescStyle"
+                        android:text="@string/step4_desc" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -333,47 +296,31 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
-                android:contentDescription="@string/step_completed"
+                android:contentDescription="@string/step_status_icon"
                 android:src="@drawable/ic_phase"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/step4_card"
-                app:layout_constraintEnd_toStartOf="@id/step4_card"
                 app:layout_constraintBottom_toBottomOf="@id/step4_card"
-                app:layout_constraintHorizontal_bias="0" />
+                app:layout_constraintEnd_toStartOf="@id/step4_card"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/step4_card" />
 
-            <!-- Step 5 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/step5_card"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:layout_constraintStart_toEndOf="@id/timelineLine"
+                style="@style/MilestoneCardStyle"
+                android:layout_marginTop="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/step4_card"
-                android:layout_margin="12dp">
+                app:layout_constraintStart_toEndOf="@id/timelineLine"
+                app:layout_constraintTop_toBottomOf="@id/step4_card">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/card_bg"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                <LinearLayout style="@style/MilestoneContentLayout">
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step5_title"
-                        android:textColor="@color/title"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        style="@style/MilestoneTitleStyle"
+                        android:text="@string/step5_title" />
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step5_desc"
-                        android:textColor="@color/subtitle"
-                        android:textSize="14sp" />
+                        style="@style/MilestoneDescStyle"
+                        android:text="@string/step5_desc" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -382,63 +329,13 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
-                android:contentDescription="@string/step_pending"
+                android:contentDescription="@string/step_status_icon"
                 android:src="@drawable/ic_phase"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/step5_card"
-                app:layout_constraintEnd_toStartOf="@id/step5_card"
                 app:layout_constraintBottom_toBottomOf="@id/step5_card"
-                app:layout_constraintHorizontal_bias="0" />
-
-            <!-- Step 6 -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/step6_card"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:layout_constraintStart_toEndOf="@id/timelineLine"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/step5_card"
-                android:layout_margin="12dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/card_bg"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step6_title"
-                        android:textColor="@color/title"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/step6_desc"
-                        android:textColor="@color/subtitle"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <ImageView
-                android:id="@+id/step6_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="16dp"
-                android:contentDescription="@string/step_pending"
-                android:src="@drawable/ic_phase"
+                app:layout_constraintEnd_toStartOf="@id/step5_card"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/step6_card"
-                app:layout_constraintEnd_toStartOf="@id/step6_card"
-                app:layout_constraintBottom_toBottomOf="@id/step6_card"
-                app:layout_constraintHorizontal_bias="0" />
-
+                app:layout_constraintTop_toTopOf="@id/step5_card" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

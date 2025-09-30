@@ -1,5 +1,6 @@
 package com.example.pddmate
 
+import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
@@ -14,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,7 +47,6 @@ class VerifyFileUploadsActivity : AppCompatActivity() {
 
     private lateinit var apiService: ApiService
 
-    // Data Models
     data class FileItem(val fileName: String, val filePath: String)
     data class FilesResponse(
         val success: Boolean,
@@ -53,8 +54,8 @@ class VerifyFileUploadsActivity : AppCompatActivity() {
         val files: List<Map<String, String>> = emptyList(),
         val project_title: String? = null
     )
+    data class ApiResponse(val success: Boolean, val message: String)
 
-    // Retrofit API Interface
     interface ApiService {
         @FormUrlEncoded
         @POST("verify_files.php")
@@ -63,20 +64,28 @@ class VerifyFileUploadsActivity : AppCompatActivity() {
             @Field("milestone_index") milestoneIndex: Int,
             @Field("user_id") userId: String
         ): Call<FilesResponse>
+
+        @FormUrlEncoded
+        @POST("set_milestone_phase.php")
+        fun setMilestonePhase(
+            @Field("project_id") projectId: Int,
+            @Field("user_id") userId: String,
+            @Field("milestone_index") milestoneIndex: Int,
+            @Field("phase") phase: String
+        ): Call<ApiResponse>
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verify_file_uploads)
 
-        // Retrofit Setup
+        val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.31.109/pdd_dashboard/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         apiService = retrofit.create(ApiService::class.java)
 
-        // Get intent extras
         projectId = intent.getIntExtra("project_id", -1)
         stepIndex = intent.getIntExtra("STEP_INDEX", -1)
         studentUserId = intent.getStringExtra("student_user_id")
@@ -84,7 +93,6 @@ class VerifyFileUploadsActivity : AppCompatActivity() {
         milestoneTitle = intent.getStringExtra("MILESTONE_TITLE")
         projectTitle = intent.getStringExtra("project_title")
 
-        // Bind Views
         backArrow = findViewById(R.id.backArrow)
         milestoneTitleTextView = findViewById(R.id.title)
         studentNameTextView = findViewById(R.id.studentNameTextView)
@@ -103,15 +111,12 @@ class VerifyFileUploadsActivity : AppCompatActivity() {
 
         fetchUploadedFiles()
 
-        // Implement logic for Accept/Reject buttons
         acceptButton.setOnClickListener {
-            // Logic to approve the milestone
-            Toast.makeText(this, "Submission accepted!", Toast.LENGTH_SHORT).show()
+            updateMilestoneStatus("accepted")
         }
 
         rejectButton.setOnClickListener {
-            // Logic to reject the milestone
-            Toast.makeText(this, "Submission rejected.", Toast.LENGTH_SHORT).show()
+            updateMilestoneStatus("rejected")
         }
     }
 
@@ -203,5 +208,28 @@ class VerifyFileUploadsActivity : AppCompatActivity() {
             Log.e("VerifyFileUploads", "Download failed: ${e.message}")
             Toast.makeText(this, "Failed to start download: ${e.message}", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun updateMilestoneStatus(phase: String) {
+        if (projectId == -1 || studentUserId.isNullOrEmpty() || stepIndex == -1) {
+            Toast.makeText(this, "Cannot update status. Missing data.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        apiService.setMilestonePhase(projectId, studentUserId!!, stepIndex, phase).enqueue(object : Callback<ApiResponse> {
+            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                if (response.isSuccessful && response.body()?.success == true) {
+                    Toast.makeText(this@VerifyFileUploadsActivity, "Milestone updated to $phase!", Toast.LENGTH_SHORT).show()
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                } else {
+                    Toast.makeText(this@VerifyFileUploadsActivity, "Failed to update status. Please try again.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                Toast.makeText(this@VerifyFileUploadsActivity, "Network error updating status.", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
