@@ -120,7 +120,7 @@ class MilestoneDetailActivity : AppCompatActivity() {
 
         val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.31.109/pdd_dashboard/")
+            .baseUrl("http://10.249.231.64/pdd_dashboard/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         apiService = retrofit.create(ApiService::class.java)
@@ -351,14 +351,12 @@ class MilestoneDetailActivity : AppCompatActivity() {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
                     Toast.makeText(this@MilestoneDetailActivity, getString(R.string.files_submitted_successfully), Toast.LENGTH_SHORT).show()
-                    setResult(Activity.RESULT_OK)
-                    finish()
                 } else {
                     Log.e("MilestoneDetailActivity", "Failed to update milestone phase.")
                     Toast.makeText(this@MilestoneDetailActivity, "Files submitted, but failed to update status.", Toast.LENGTH_LONG).show()
-                    setResult(Activity.RESULT_OK)
-                    finish()
                 }
+                setResult(Activity.RESULT_OK)
+                finish()
             }
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                 Log.e("MilestoneDetailActivity", "Network error updating milestone phase: ${t.message}")

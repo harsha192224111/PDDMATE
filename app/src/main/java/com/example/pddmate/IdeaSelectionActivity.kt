@@ -62,7 +62,7 @@ class IdeaSelectionActivity : AppCompatActivity() {
 
         val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.31.109/pdd_dashboard/")
+            .baseUrl("http://10.249.231.64/pdd_dashboard/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         apiService = retrofit.create(ApiService::class.java)

@@ -95,7 +95,7 @@ class ResetPasswordActivity : AppCompatActivity() {
         val body = json.toString().toRequestBody(mediaType)
 
         val request = Request.Builder()
-            .url("http://192.168.31.109/pdd_dashboard/reset_password.php")
+            .url("http://10.249.231.64/pdd_dashboard/reset_password.php")
             .post(body)
             .build()
 

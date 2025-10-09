@@ -62,7 +62,7 @@ class SlotEnrollmentActivity : AppCompatActivity() {
             }
             .build()
 
-        val url = "http://192.168.31.109/pdd_dashboard/get_enrollments.php?student_user_id=$currentStudentUserId"
+        val url = "http://10.249.231.64/pdd_dashboard/get_enrollments.php?student_user_id=$currentStudentUserId"
         val request = Request.Builder()
             .url(url)
             .get()
@@ -152,7 +152,7 @@ class SlotEnrollmentActivity : AppCompatActivity() {
         val requestBody = jsonObject.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
         val request = Request.Builder()
-            .url("http://192.168.31.109/pdd_dashboard/enroll_project.php")
+            .url("http://10.249.231.64/pdd_dashboard/enroll_project.php")
             .post(requestBody)
             .build()
         client.newCall(request).enqueue(object : Callback {

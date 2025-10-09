@@ -190,7 +190,7 @@ class VerifyFileUploadsActivity : AppCompatActivity() {
     }
 
     private fun downloadFile(fileItem: FileItem) {
-        val baseUrl = "http://192.168.31.109/pdd_dashboard/"
+        val baseUrl = "http://10.249.231.64/pdd_dashboard/"
         val fullUrl = "$baseUrl${fileItem.filePath}"
 
         val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager

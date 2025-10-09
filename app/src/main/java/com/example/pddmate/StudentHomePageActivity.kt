@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pddmate.databinding.ActivityStudentHomePageBinding
 import com.google.gson.GsonBuilder
+import com.google.gson.annotations.SerializedName
 import java.util.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,10 +35,9 @@ class StudentHomePageActivity : AppCompatActivity() {
     )
     private val weekDays = arrayOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
 
-    // New API Service and Data Model
     data class EnrollmentResponse(
         val success: Boolean,
-        val project_id: Int?
+        @SerializedName("project_id") val projectId: Int?
     )
     interface EnrollmentApiService {
         @FormUrlEncoded
@@ -51,10 +51,9 @@ class StudentHomePageActivity : AppCompatActivity() {
         binding = ActivityStudentHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize Retrofit with lenient Gson to handle potential non-standard JSON responses
         val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.31.109/pdd_dashboard/")
+            .baseUrl("http://10.249.231.64/pdd_dashboard/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         enrollmentApiService = retrofit.create(EnrollmentApiService::class.java)
@@ -85,6 +84,10 @@ class StudentHomePageActivity : AppCompatActivity() {
         popup.menuInflater.inflate(R.menu.student_home_menu, popup.menu)
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
+                R.id.menu_dashboard -> {
+                    startActivity(Intent(this, StudentDashboardActivity::class.java))
+                    true
+                }
                 R.id.menu_profile -> {
                     startActivity(Intent(this, ProfileActivity::class.java))
                     true
@@ -120,15 +123,13 @@ class StudentHomePageActivity : AppCompatActivity() {
             return
         }
 
-        // Fetch the project ID from the server
         enrollmentApiService.getStudentEnrollment(userId).enqueue(object : Callback<EnrollmentResponse> {
             override fun onResponse(call: Call<EnrollmentResponse>, response: Response<EnrollmentResponse>) {
                 if (response.isSuccessful) {
                     val body = response.body()
-                    if (body?.success == true && body.project_id != null) {
-                        launchProjectMilestones(body.project_id, userId)
+                    if (body?.success == true && body.projectId != null) {
+                        launchProjectMilestones(body.projectId, userId)
                     } else {
-                        // Success=false, meaning no approved enrollment found. Redirect to enrollment.
                         Toast.makeText(this@StudentHomePageActivity, "No approved project found. Please enroll.", Toast.LENGTH_LONG).show()
                         startActivity(Intent(this@StudentHomePageActivity, SlotEnrollmentActivity::class.java))
                     }
@@ -165,7 +166,6 @@ class StudentHomePageActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             else -> {
-                // Fallback if shared preference is not set
                 startActivity(Intent(this, SlotEnrollmentActivity::class.java))
             }
         }

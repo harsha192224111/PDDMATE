@@ -52,11 +52,14 @@ class DeveloperHomePageActivity : AppCompatActivity() {
         val popup = PopupMenu(this, view)
         popup.menuInflater.inflate(R.menu.developer_home_menu, popup.menu)
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-            // When ready, implement additional menu items here
             when (menuItem.itemId) {
+                R.id.menu_dashboard -> {
+                    openDashboard()
+                    true
+                }
                 R.id.menu_profile -> {
-                   openProfile()
-                   true
+                    openProfile()
+                    true
                 }
                 R.id.menu_slots -> {
                     openSlots()
@@ -76,14 +79,21 @@ class DeveloperHomePageActivity : AppCompatActivity() {
         popup.show()
     }
 
-
+    private fun openDashboard() {
+        // Pass the user ID to the dashboard activity
+        val intent = Intent(this, DeveloperDashboardActivity::class.java)
+        intent.putExtra("USER_ID", intent.getStringExtra("USER_ID"))
+        startActivity(intent)
+    }
 
     private fun openProfile() {
         startActivity(Intent(this, ProfileActivity::class.java))
     }
+
     private fun openSlots() {
         startActivity(Intent(this, SlotsActivity::class.java))
     }
+
     private fun openVerifyProgress() {
         startActivity(Intent(this, VerifyProgressActivity::class.java))
     }

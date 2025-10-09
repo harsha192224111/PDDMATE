@@ -58,12 +58,12 @@ class SupervisorHomePageActivity : AppCompatActivity() {
                     startActivity(Intent(this, ProfileActivity::class.java))
                     true
                 }
-                /*R.id.menu_verify_progress -> {
-                    startActivity(Intent(this, VerifyProgressActivity::class.java))
+                R.id.menu_pdd_dashboard -> {
+                    startActivity(Intent(this, SupervisorDashboardActivity::class.java))
                     true
                 }
-                R.id.menu_pdd_analytics -> {
-                    startActivity(Intent(this, PddAnalyticsActivity::class.java))
+                /*R.id.menu_verify_progress -> {
+                    startActivity(Intent(this, VerifyProgressActivity::class.java))
                     true
                 }*/
                 R.id.menu_logout -> {

@@ -67,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         api = Retrofit.Builder()
-            .baseUrl("http://192.168.31.109/pdd_dashboard/")
+            .baseUrl("http://10.249.231.64/pdd_dashboard/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)

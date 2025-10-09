@@ -4,11 +4,11 @@
         android:id="@+id/menu_profile"
         android:title="Profile" />
     <item
+        android:id="@+id/menu_pdd_dashboard"
+        android:title="PDD Dashboard" />
+    <item
         android:id="@+id/menu_verify_progress"
         android:title="Verify Progress" />
-    <item
-        android:id="@+id/menu_pdd_analytics"
-        android:title="PDD Analytics" />
     <item
         android:id="@+id/menu_logout"
         android:title="Logout" />

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
         android:id="@+id/menu_profile"
         android:title="Profile" />
@@ -9,6 +10,9 @@
     <item
         android:id="@+id/menu_project_milestones"
         android:title="Project Milestones" />
+    <item
+        android:id="@+id/menu_dashboard"
+        android:title="Dashboard" />
     <item
         android:id="@+id/menu_logout"
         android:title="Logout" />

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,8 @@ class ProjectMilestoneAppActivity : AppCompatActivity() {
     private var userId: String? = null
     private var projectId: Int = -1
     private lateinit var apiService: ApiService
+    private lateinit var studentNameTextView: TextView
+    private lateinit var studentIdTextView: TextView
 
     private val milestonePhases = mutableMapOf<Int, String>()
 
@@ -55,19 +58,13 @@ class ProjectMilestoneAppActivity : AppCompatActivity() {
 
         val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.31.109/pdd_dashboard/")
+            .baseUrl("http://10.249.231.64/pdd_dashboard/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         apiService = retrofit.create(ApiService::class.java)
 
-        stepIcons = listOf(
-            findViewById(R.id.step0_icon),
-            findViewById(R.id.step1_icon),
-            findViewById(R.id.step2_icon),
-            findViewById(R.id.step3_icon),
-            findViewById(R.id.step4_icon),
-            findViewById(R.id.step5_icon)
-        )
+        studentNameTextView = findViewById(R.id.studentNameTextView)
+        studentIdTextView = findViewById(R.id.studentIdTextView)
 
         steps = listOf(
             findViewById(R.id.step0_card),
@@ -76,6 +73,15 @@ class ProjectMilestoneAppActivity : AppCompatActivity() {
             findViewById(R.id.step3_card),
             findViewById(R.id.step4_card),
             findViewById(R.id.step5_card)
+        )
+
+        stepIcons = listOf(
+            findViewById(R.id.step0_icon),
+            findViewById(R.id.step1_icon),
+            findViewById(R.id.step2_icon),
+            findViewById(R.id.step3_icon),
+            findViewById(R.id.step4_icon),
+            findViewById(R.id.step5_icon)
         )
 
         val backArrow: ImageView = findViewById(R.id.backArrow)
@@ -87,12 +93,21 @@ class ProjectMilestoneAppActivity : AppCompatActivity() {
             }
         }
 
+        updateUserInfoFromSharedPreferences()
         fetchMilestonePhases()
     }
 
     override fun onResume() {
         super.onResume()
         fetchMilestonePhases()
+    }
+
+    private fun updateUserInfoFromSharedPreferences() {
+        val prefs = getSharedPreferences("login_session", MODE_PRIVATE)
+        val name = prefs.getString("name", "Student Name")
+        val regNo = prefs.getString("user_id", "Registration No")
+        studentNameTextView.text = name
+        studentIdTextView.text = regNo
     }
 
     private fun fetchMilestonePhases() {

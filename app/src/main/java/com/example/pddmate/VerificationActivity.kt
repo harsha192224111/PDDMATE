@@ -57,7 +57,7 @@ class VerificationActivity : AppCompatActivity() {
         val json = JSONObject().apply { put("email", email) }
         val body = json.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
         val request = Request.Builder()
-            .url("http://192.168.31.109/pdd_dashboard/forgot_password.php")
+            .url("http://10.249.231.64/pdd_dashboard/forgot_password.php")
             .post(body)
             .build()
 
@@ -120,7 +120,7 @@ class VerificationActivity : AppCompatActivity() {
         val json = JSONObject().apply { put("email", email) }
         val body = json.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
         val request = Request.Builder()
-            .url("http://192.168.31.109/pdd_dashboard/get_user_id.php")
+            .url("http://10.249.231.64/pdd_dashboard/get_user_id.php")
             .post(body)
             .build()
 

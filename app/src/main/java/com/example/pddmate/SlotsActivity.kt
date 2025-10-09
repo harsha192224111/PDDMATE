@@ -75,7 +75,7 @@ class SlotsActivity : AppCompatActivity() {
         val requestBody = jsonBody.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
         val request = Request.Builder()
-            .url("http://192.168.31.109/pdd_dashboard/get_slots.php")
+            .url("http://10.249.231.64/pdd_dashboard/get_slots.php")
             .post(requestBody)
             .build()
 

@@ -14,6 +14,7 @@
     <color name="grayText">#888888</color>
     <color name="gray">#E0E0E0</color>
     <color name="blue">#007BFF</color>
+    <color name="divider_gray">#E0E0E0</color>
 
     <color name="background">#FFFFFF</color>
     <color name="password_card_bg">#E8EAED</color>
@@ -95,6 +96,29 @@
     <color name="stat_value_text">#212121</color>
     <color name="stat_label_text">#424242</color>
     <color name="chart_title_text">#1E1E1E</color>
+
+    
+
+    <color name="card_background">#FFFFFF</color>
+
+
+
+
+    <color name="dashboard_background">#F5F5F5</color>
+    <color name="text_dark">#212121</color>
+    <color name="text_light">#757575</color>
+    <color name="success_green">#4CAF50</color>
+    <color name="pending_yellow">#FFC107</color>
+    <color name="rejected_red">#F44336</color>
+    <color name="colorPrimaryLight">#B39DDB</color>
+
+    <color name="teal_700">#018786</color>
+
+    <color name="table_header_bg">#EEEEEE</color>
+
+    <color name="app_blue">#1976D2</color>
+    <color name="product_orange">#FB8C00</color>
+
 
 
 

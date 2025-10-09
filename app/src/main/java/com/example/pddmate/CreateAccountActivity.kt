@@ -16,11 +16,13 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.Headers
 import retrofit2.http.POST
 
 data class SignupResponse(val success: Boolean, val message: String)
 
 interface ApiSignup {
+    @Headers("Content-Type: application/json")
     @POST("signup.php")
     fun signup(@Body body: Map<String, String>): Call<SignupResponse>
 }
@@ -48,19 +50,15 @@ class CreateAccountActivity : AppCompatActivity() {
         binding.roleSpinner.adapter = adapter
         binding.roleSpinner.setSelection(0)
 
-        binding.roleSpinner.setOnItemSelectedListener(object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>, view: android.view.View?, position: Int, id: Long) {
-                // Role-specific UI logic if any.
-            }
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>) {}
-        })
-
         setPasswordFieldInitialState()
 
+        // Toggle visibility icons
         binding.passwordEditText.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP &&
-                event.rawX >= (binding.passwordEditText.right - (binding.passwordEditText.compoundDrawables[2]?.bounds?.width()
-                    ?: 0) - binding.passwordEditText.paddingEnd)) {
+                event.rawX >= (binding.passwordEditText.right -
+                        (binding.passwordEditText.compoundDrawables[2]?.bounds?.width() ?: 0) -
+                        binding.passwordEditText.paddingEnd)
+            ) {
                 togglePasswordVisibility()
                 return@setOnTouchListener true
             }
@@ -69,17 +67,20 @@ class CreateAccountActivity : AppCompatActivity() {
 
         binding.confirmPasswordEditText.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP &&
-                event.rawX >= (binding.confirmPasswordEditText.right - (binding.confirmPasswordEditText.compoundDrawables[1]?.bounds?.width()
-                    ?: 0) - binding.confirmPasswordEditText.paddingEnd)) {
+                event.rawX >= (binding.confirmPasswordEditText.right -
+                        (binding.confirmPasswordEditText.compoundDrawables[2]?.bounds?.width() ?: 0) -
+                        binding.confirmPasswordEditText.paddingEnd)
+            ) {
                 toggleConfirmPasswordVisibility()
                 return@setOnTouchListener true
             }
             false
         }
 
+        // Retrofit setup
         val gson = GsonBuilder().setLenient().create()
         api = Retrofit.Builder()
-            .baseUrl("http://192.168.31.109/pdd_dashboard/")
+            .baseUrl("http://10.249.231.64/pdd_dashboard/") // ✅ Replace with your backend IP
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiSignup::class.java)
@@ -87,13 +88,13 @@ class CreateAccountActivity : AppCompatActivity() {
         binding.signUpButton.setOnClickListener {
             val name = binding.nameEditText.text.toString().trim()
             val email = binding.emailEditText.text.toString().trim()
-            val phoneNumber = binding.phoneNumberEditText.text.toString().trim()
-            val userId = binding.regNoEditText.text.toString().trim() // renamed - regNoEditText actually takes user_id
+            val phone = binding.phoneNumberEditText.text.toString().trim()
+            val userId = binding.regNoEditText.text.toString().trim()
             val role = binding.roleSpinner.selectedItem.toString()
             val password = binding.passwordEditText.text.toString()
             val confirmPassword = binding.confirmPasswordEditText.text.toString()
 
-            if (name.isEmpty() || email.isEmpty() || phoneNumber.isEmpty() ||
+            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() ||
                 userId.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()
             ) {
                 Toast.makeText(this, "All fields are required.", Toast.LENGTH_SHORT).show()
@@ -113,11 +114,11 @@ class CreateAccountActivity : AppCompatActivity() {
             val body = mapOf(
                 "name" to name,
                 "email" to email,
-                "phone_number" to phoneNumber,
-                "user_id" to userId, // changed key from reg_no to user_id
+                "user_id" to userId,
                 "role" to role,
                 "password" to password,
-                "confirm_password" to confirmPassword
+                "confirm_password" to confirmPassword,
+                "phone_number" to phone
             )
 
             binding.signUpButton.isEnabled = false
@@ -125,23 +126,21 @@ class CreateAccountActivity : AppCompatActivity() {
             api.signup(body).enqueue(object : Callback<SignupResponse> {
                 override fun onResponse(call: Call<SignupResponse>, response: Response<SignupResponse>) {
                     binding.signUpButton.isEnabled = true
-                    if (response.isSuccessful) {
-                        val resp = response.body()
-                        if (resp?.success == true) {
-                            Toast.makeText(this@CreateAccountActivity, "Signup successful! Please login.", Toast.LENGTH_LONG).show()
+                    val resp = response.body()
+                    if (response.isSuccessful && resp != null) {
+                        Toast.makeText(this@CreateAccountActivity, resp.message, Toast.LENGTH_LONG).show()
+                        if (resp.success) {
                             startActivity(Intent(this@CreateAccountActivity, LoginActivity::class.java))
                             finish()
-                        } else {
-                            Toast.makeText(this@CreateAccountActivity, resp?.message ?: "Signup failed", Toast.LENGTH_LONG).show()
                         }
                     } else {
-                        Toast.makeText(this@CreateAccountActivity, "Server error: ${response.code()}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@CreateAccountActivity, "Server returned no data.", Toast.LENGTH_LONG).show()
                     }
                 }
 
                 override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
                     binding.signUpButton.isEnabled = true
-                    Toast.makeText(this@CreateAccountActivity, "Error: ${t.localizedMessage}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@CreateAccountActivity, "Network error: ${t.localizedMessage}", Toast.LENGTH_LONG).show()
                 }
             })
         }
@@ -154,33 +153,28 @@ class CreateAccountActivity : AppCompatActivity() {
 
     private fun setPasswordFieldInitialState() {
         binding.passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(this, R.drawable.ic_hide_password), null)
-
         binding.confirmPasswordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        binding.confirmPasswordEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(this, R.drawable.ic_hide_password), null)
     }
 
     private fun togglePasswordVisibility() {
-        if (isPasswordVisible) {
-            binding.passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(this, R.drawable.ic_hide_password), null)
-        } else {
-            binding.passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(this, R.drawable.ic_show_password), null)
-        }
+        val icon = if (isPasswordVisible) R.drawable.ic_hide_password else R.drawable.ic_show_password
+        binding.passwordEditText.inputType = if (isPasswordVisible)
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        else
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
         binding.passwordEditText.setSelection(binding.passwordEditText.text.length)
+        binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(this, icon), null)
         isPasswordVisible = !isPasswordVisible
     }
 
     private fun toggleConfirmPasswordVisibility() {
-        if (isConfirmPasswordVisible) {
-            binding.confirmPasswordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            binding.confirmPasswordEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(this, R.drawable.ic_hide_password), null)
-        } else {
-            binding.confirmPasswordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            binding.confirmPasswordEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(this, R.drawable.ic_show_password), null)
-        }
+        val icon = if (isConfirmPasswordVisible) R.drawable.ic_hide_password else R.drawable.ic_show_password
+        binding.confirmPasswordEditText.inputType = if (isConfirmPasswordVisible)
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        else
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
         binding.confirmPasswordEditText.setSelection(binding.confirmPasswordEditText.text.length)
+        binding.confirmPasswordEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(this, icon), null)
         isConfirmPasswordVisible = !isConfirmPasswordVisible
     }
 }

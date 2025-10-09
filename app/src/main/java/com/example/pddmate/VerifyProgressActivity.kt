@@ -60,7 +60,7 @@ class VerifyProgressActivity : AppCompatActivity() {
 
     private fun fetchProjectsForVerification() {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.31.109/pdd_dashboard/")
+            .baseUrl("http://10.249.231.64/pdd_dashboard/")
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
         val api = retrofit.create(VerifyProgressApi::class.java)

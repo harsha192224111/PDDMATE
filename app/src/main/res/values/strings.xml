@@ -96,7 +96,7 @@
 
     <string name="project_milestones">Project Milestones</string>
     <string name="back_arrow">Back arrow</string>
-    <string name="progress_percent">90%</string>
+
     <string name="project_progress">Project Progress</string>
 
     <!-- Milestones with titles & descriptions -->
@@ -178,7 +178,6 @@
     <string name="verification">Verification</string>
 
 
-
     <string name="mobile_number_hint">+91 Enter your Mobile number</string>
     <string name="enter_otp">Enter OTP</string>
     <string name="get_otp">Get OTP</string>
@@ -233,7 +232,7 @@
     <string name="enter_course_title">Enter Course Title</string>
     <string name="maximum_students">Maximum Students</string>
     <string name="enter_capacity">Enter Capacity</string>
-    <string name="project_type">Project Type</string>
+
     <string name="app">App</string>
     <string name="product">Product</string>
     <string name="date">Date</string>
@@ -272,7 +271,7 @@
     <string name="slots_left_placeholder">Slots Left: %1$d</string>
 
 
-    <string name="project_title">PDD for Android Development</string>
+
     <string name="progress_percentage">90%</string>
     <string name="progress_circle_desc">Overall project progress circle showing 90 percent completion</string>
     <string name="progress_text_desc">Overall project completion percentage</string>
@@ -380,7 +379,7 @@
 
     <!-- Developer Info -->
     <string name="developer_icon">Developer Icon</string>
-    <string name="developer_name">Harsha Phani Teja G</string>
+
     <string name="developer_id">192224111</string>
 
 
@@ -391,7 +390,6 @@
 
     <string name="project_desc_value">PDD Project Management app is to tract the progress and also to reduce the communication gap between student and developer and supervisor</string>
     <string name="accept">Accept</string>
-
 
 
     <string name="ui_ux_design">UI / UX Design</string>
@@ -409,7 +407,7 @@
     <string name="select_files_to_upload">Please select files to upload.</string>
     <string name="cleared_files_from_selection">Cleared files from selection.</string>
     <string name="selected_file">Selected File</string>
-    <string name="network_error">Network error: %1$s</string>
+
     <string name="uploading">Uploading...</string>
     <string name="failed_get_filename">Failed to get filename for one of the files.</string>
     <string name="failed_read_file">Failed to read one of the files.</string>
@@ -420,7 +418,8 @@
 
     <string name="total_students_count">248</string>
     <string name="total_developers_count">156</string>
-    <string name="completion_rate_value">76%%</string> <string name="pending_reviews_count">23</string>
+    <string name="completion_rate_value">76%%</string>
+    <string name="pending_reviews_count">23</string>
 
     <string name="total_students">Total Students</string>
     <string name="total_developers">Total Developers</string>
@@ -470,7 +469,6 @@
     <string name="no_files_uploaded_for_this_milestone">no file uploads for this milestone</string>
 
 
-
     <string name="step_status_icon">Step Status Icon</string>
 
 
@@ -493,8 +491,98 @@
 
     <string name="clear_button">Clear</string>
 
+    <!-- General App Name (adjust as needed) -->
 
 
+    <!-- Supervisor Dashboard Titles -->
+    <string name="pdd_program_overview">PDD Program Overview</string>
+
+    <string name="submission_status_title">Submission Status Distribution</string>
+
+    <!-- Metric Card Labels (Used in Supervisor Dashboard Kotlin) -->
+    <string name="metric_total_students">Total Students</string>
+    <string name="metric_total_developers">Total Developers</string>
+    <string name="metric_completion_rate">Completion Rate</string>
+    <string name="metric_pending_reviews">Pending Reviews</string>
+
+
+    <string name="type_na">Type: N/A</string>
+    <string name="developer_na">Developer: N/A</string>
+
+
+    <string name="developer_dashboard">Developer Dashboard</string>
+
+    <string name="total_projects">Total Projects</string>
+
+    <string name="submissions_status">Submissions Status</string>
+    <string name="milestones_for_review">Milestones for Review</string>
+
+    <!-- Values -->
+    <string name="value_0">0</string>
+
+
+
+
+    <string name="student_dashboard">Student Dashboard</string>
+    <string name="welcome_student">Welcome, %s</string>
+    <string name="default_student_name">Student</string>
+    <string name="user_id_not_found">User ID not found. Please log in again.</string>
+    <string name="my_approved_project">My Approved Project</string>
+    <string name="project_title">Project Title: %s</string>
+    <string name="developer_name">Developer: %s</string>
+    <string name="project_type">Type: %s</string>
+    <string name="project_title_loading">Project Title: Loading...</string>
+    <string name="project_title_na">Project Title: N/A</string>
+    <string name="developer_name_na">Developer: N/A</string>
+    <string name="project_type_na">Type: N/A</string>
+    <string name="overall_progress">Overall Progress</string>
+    <string name="progress_percent">%d%%</string>
+    <string name="progress_0">0%%</string>
+    <string name="milestone_status">Milestone Status</string>
+    <string name="enroll_project_slot">Enroll in a project slot to see your milestones.</string>
+    <string name="failed_to_load_project_details">Failed to load project details.</string>
+    <string name="network_error">Network error: %s</string>
+    <string name="please_enroll_in_project">Please enroll in a project first.</string>
+    <string name="enroll_in_slot">Enroll in Slot</string>
+    <string name="view_notifications">Notifications</string>
+
+
+    <string name="no_pending_reviews_msg">No milestone submissions awaiting review.</string>
+    <string name="milestone_title_format">Milestone %d - %s</string>
+    <string name="failed_to_load_dashboard_data">Failed to load dashboard data.</string>
+
+
+    <string name="review">Review</string>
+    <string name="student_name_text">Student Name</string>
+    <string name="project_title_text">Project Title</string>
+    <string name="welcome_developer">Welcome, %s</string>
+
+
+    <string name="milestone_column_header">Milestone</string>
+    <string name="deadline_column_header">Approx. Deadline</string>
+
+    <string name="enrollment_status">Enrollment Status</string>
+    <string name="student_progress_comparison">Student Progress Comparison</string>
+    <string name="avg_time_per_milestone">Average Time per Milestone</string>
+    <string name="app_vs_product_progress">App VS Product Progress</string>
+
+
+    <string name="enrollment_trends_title">Enrollment Trends Over Time</string>
+    <string name="app_product_enrollment_title">App vs Product Student Enrollment</string>
+
+    <string name="app_product_completion_title">App vs Product Completion Rate</string>
+    <string name="app_product_approval_title">App vs Product Approval/Rejection Rates</string>
+    <string name="lagging_students">Lagging Students</string>
+    <string name="app_vs_product_enrollment">App vs Product</string>
+
+    <string name="app_projects">App Projects</string>
+    <string name="product_projects">Product Projects</string>
+    <string name="milestone_completion_count">Milestone Completion Count</string>
+    <string name="completion_rate_percent">Completion Rate (%)</string>
+
+    <string name="accepted">Accepted</string>
+    <string name="rejected">Rejected</string>
+    <string name="progress_trend_title">Student Progress Trend</string>
 
 </resources>
 
