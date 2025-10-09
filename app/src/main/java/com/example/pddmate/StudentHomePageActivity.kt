@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pddmate.databinding.ActivityStudentHomePageBinding
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
-import java.util.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import java.util.*
 
 class StudentHomePageActivity : AppCompatActivity() {
 
@@ -149,9 +149,11 @@ class StudentHomePageActivity : AppCompatActivity() {
     }
 
     private fun launchProjectMilestones(projectId: Int, userId: String) {
+        // Correct: Use PDDMATE_PREFS and fetch student_slot as stored
         val sharedPref = getSharedPreferences("PDDMATE_PREFS", MODE_PRIVATE)
         val studentSlot = sharedPref.getString("student_slot", "")
 
+        // "APP_DEVELOPMENT" -> ProjectMilestoneAppActivity, "PRODUCT_DEVELOPMENT" -> ProjectMilestoneProductActivity
         when (studentSlot) {
             "APP_DEVELOPMENT" -> {
                 val intent = Intent(this, ProjectMilestoneAppActivity::class.java)
@@ -166,6 +168,7 @@ class StudentHomePageActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             else -> {
+                // If slot is not set, go to enrollment
                 startActivity(Intent(this, SlotEnrollmentActivity::class.java))
             }
         }

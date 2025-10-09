@@ -271,23 +271,25 @@ class StudentDashboardActivity : AppCompatActivity() {
             startDateFormat.parse(startDateString)
         } catch (e: Exception) {
             null
-        }
+        } ?: return // Exit if start date is invalid
 
         val sortedTimestamps = timestamps.entries.sortedBy { it.key.toInt() }
 
-        sortedTimestamps.forEach { entry ->
-            val milestoneIndex = entry.key.toInt()
+        // Add a starting point at day 0 with 0 milestones completed
+        entries.add(Entry(0f, 0f))
+
+        sortedTimestamps.forEachIndexed { index, entry ->
             val timestampDate = dateFormat.parse(entry.value)
-            val xValue = milestoneIndex.toFloat() // X-axis is milestone index
-            val yValue = if (projectStartDate != null && timestampDate != null) {
-                ((timestampDate.time - projectStartDate.time) / (1000 * 60 * 60 * 24)).toFloat() // Y-axis is days
+            val daysElapsed = if (timestampDate != null) {
+                ((timestampDate.time - projectStartDate.time) / (1000 * 60 * 60 * 24)).toFloat()
             } else {
                 0f
             }
-            entries.add(Entry(xValue, yValue))
+            val milestonesCompleted = (index + 1).toFloat()
+            entries.add(Entry(daysElapsed, milestonesCompleted))
         }
 
-        val dataSet = LineDataSet(entries, "Days to Complete Milestones").apply {
+        val dataSet = LineDataSet(entries, "Progress Over Time").apply {
             color = ContextCompat.getColor(this@StudentDashboardActivity, R.color.colorPrimary)
             valueTextColor = Color.BLACK
             lineWidth = 2f
@@ -304,10 +306,6 @@ class StudentDashboardActivity : AppCompatActivity() {
         progressOverTimeLineChart.setPinchZoom(true)
         progressOverTimeLineChart.animateY(1000)
 
-        val milestoneLabels = (if (projectType == "App") appMilestoneTitles else productMilestoneTitles)
-            .map { it.split(" ").first() }
-            .toMutableList()
-
         // Customize X-axis
         val xAxis = progressOverTimeLineChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -315,10 +313,12 @@ class StudentDashboardActivity : AppCompatActivity() {
         xAxis.granularity = 1f
         xAxis.textColor = Color.BLACK
         xAxis.setAvoidFirstLastClipping(true)
-        xAxis.valueFormatter = IndexAxisValueFormatter(milestoneLabels)
-        xAxis.axisMinimum = -0.5f
-        xAxis.axisMaximum = (milestoneLabels.size - 0.5f).toFloat()
-        xAxis.labelRotationAngle = 0f
+        xAxis.valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return "${value.toInt()} Days"
+            }
+        }
+        xAxis.axisMinimum = 0f
 
         // Customize Y-axis
         val leftAxis = progressOverTimeLineChart.axisLeft
@@ -327,7 +327,7 @@ class StudentDashboardActivity : AppCompatActivity() {
         leftAxis.textColor = Color.BLACK
         leftAxis.valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                return "${value.toInt()} Days"
+                return "${value.toInt()}"
             }
         }
 

@@ -13,6 +13,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
 import com.google.gson.GsonBuilder
+import android.content.Context
 
 class SlotEnrollmentActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySlotEnrollmentBinding
@@ -27,7 +28,7 @@ class SlotEnrollmentActivity : AppCompatActivity() {
         binding = ActivitySlotEnrollmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val prefs = getSharedPreferences("login_session", MODE_PRIVATE)
+        val prefs = getSharedPreferences("login_session", Context.MODE_PRIVATE)
         currentStudentUserId = prefs.getString("user_id", "") ?: ""
 
         binding.backArrow.setOnClickListener { finish() }
@@ -172,14 +173,14 @@ class SlotEnrollmentActivity : AppCompatActivity() {
                             adapter.notifyDataSetChanged()
                             alreadyEnrolled = true
                             adapter.setSingleEnrollment(true)
-                            val sharedPref = getSharedPreferences("PDDMATE_PREFS", MODE_PRIVATE)
+                            val sharedPref = getSharedPreferences("PDDMATE_PREFS", Context.MODE_PRIVATE)
                             with(sharedPref.edit()) {
                                 if (slot.type.equals("App", ignoreCase = true)) {
                                     putString("student_slot", "APP_DEVELOPMENT")
                                 } else if (slot.type.equals("Product", ignoreCase = true)) {
                                     putString("student_slot", "PRODUCT_DEVELOPMENT")
                                 }
-                                commit()
+                                apply() // Changed from commit() to apply()
                             }
                         }
                     }
