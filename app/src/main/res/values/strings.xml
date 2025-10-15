@@ -584,5 +584,48 @@
     <string name="rejected">Rejected</string>
     <string name="progress_trend_title">Student Progress Trend</string>
 
+
+
+
+    <string name="submissions_status_breakdown">Submission Status Breakdown</string>
+    <string name="pending_reviews_queue">Pending Reviews Queue</string>
+
+    <string name="enrollment_status_breakdown">Enrollment Status Breakdown</string>
+    <string name="milestone_completion_overview">Milestone Completion Overview (Per Project)</string>
+    <string name="rejected_phases_trend">Rejected Phases Trend</string>
+    <string name="student_progress_distribution">Student Progress Distribution</string>
+    <string name="avg_time_to_approve">Average Time to Approve Submissions</string>
+    <string name="app_product_comparison">Comparison: App vs Product Projects</string>
+
+    <string name="hardcoded_zero">0</string>
+    <string name="submission_status_breakdown">Submission Status Breakdown</string>
+    <string name="milestone_completion_overview_title">Milestone Completion Overview</string>
+
+
+    <string name="title_activity_supervisor_dashboard">SupervisorDashboardActivity</string>
+
+
+
+    <string name="pending">Pending</string>
+    <string name="phase_performance_title">Phase Performance Title</string>
+    <string name="student_performance_progress_title">Student Performance Progress</string>
+
+
+    <string name="overall_enrollment_title">Overall Enrollment</string>
+    <string name="project_capacity_utilization">Project Capacity Utilization</string>
+    <string name="capacity_utilization_percent">Capacity Utilization (%)</string>
+    <string name="developer_performance_title">Developer Performance Metrics</string>
+    <string name="developer_completion_rate">Completion Rate (%)</string>
+    <string name="lagging_students_title">Lagging Students Identification</string>
+    <string name="student_progress_percent">Progress (%)</string>
+    <string name="completion_time_distribution_title">Completion Time Distribution</string>
+    <string name="student_count">Student Count</string>
+    <string name="top_performing_projects_title">Top Performing Projects</string>
+    <string name="average_progress_percent">Average Progress (%)</string>
+    <string name="monthly_activity_summary_title">Monthly Activity Summary</string>
+    <string name="enrollments">Enrollments</string>
+    <string name="submissions">Submissions</string>
+    <string name="enrollment_to_completion_title">Enrollment to Completion Funnel</string>
+
 </resources>
 

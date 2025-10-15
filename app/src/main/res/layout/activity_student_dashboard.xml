@@ -136,12 +136,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Progress Over Time"
+                    android:text="My Milestone Progress Timeline"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_dark" />
                 <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/progress_over_time_line_chart"
+                    android:id="@+id/milestone_progress_line_chart"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:layout_marginTop="8dp"
@@ -172,7 +172,7 @@
                     android:layout_marginTop="16dp" />
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/bar_chart"
+                    android:id="@+id/status_bar_chart"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:layout_marginTop="8dp"

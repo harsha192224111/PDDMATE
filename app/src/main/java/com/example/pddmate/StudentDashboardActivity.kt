@@ -48,9 +48,9 @@ class StudentDashboardActivity : AppCompatActivity() {
     private lateinit var projectTypeTextView: TextView
     private lateinit var progressBar: ProgressBar
     private lateinit var progressPercentTextView: TextView
-    private lateinit var progressOverTimeLineChart: LineChart
+    private lateinit var milestoneProgressLineChart: LineChart
     private lateinit var comparisonLineChart: LineChart
-    private lateinit var barChart: BarChart
+    private lateinit var statusBarChart: BarChart
     private lateinit var deadlinesContainer: LinearLayout
 
     private lateinit var apiService: ApiService
@@ -120,9 +120,9 @@ class StudentDashboardActivity : AppCompatActivity() {
         projectTypeTextView = findViewById(R.id.project_type_text_view)
         progressBar = findViewById(R.id.progress_bar)
         progressPercentTextView = findViewById(R.id.progress_percent_text)
-        progressOverTimeLineChart = findViewById(R.id.progress_over_time_line_chart)
+        milestoneProgressLineChart = findViewById(R.id.milestone_progress_line_chart)
         comparisonLineChart = findViewById(R.id.comparison_line_chart)
-        barChart = findViewById(R.id.bar_chart)
+        statusBarChart = findViewById(R.id.status_bar_chart)
         deadlinesContainer = findViewById(R.id.deadlines_container)
 
         userId = intent.getStringExtra("USER_ID")
@@ -174,7 +174,7 @@ class StudentDashboardActivity : AppCompatActivity() {
                         projectTypeTextView.text = getString(R.string.project_type, project.type)
                         projectId = project.projectId
                         updateProgressBar(completionRate)
-                        setupProgressOverTimeLineChart(milestoneTimestamps, projectTimeline?.startDate, project.type)
+                        setupMilestoneProgressTimelineChart(milestoneTimestamps)
                         setupBarChart(milestoneCounts)
                         setupComparisonLineChart(studentMilestoneTimestamps, allStudentsProgress, project.type, totalStudents)
                         setupDeadlinesTable(projectTimeline, project.type)
@@ -183,12 +183,12 @@ class StudentDashboardActivity : AppCompatActivity() {
                         developerNameTextView.text = getString(R.string.developer_name_na)
                         projectTypeTextView.text = getString(R.string.project_type_na)
                         updateProgressBar(0.0)
-                        progressOverTimeLineChart.clear()
-                        barChart.clear()
+                        milestoneProgressLineChart.clear()
+                        statusBarChart.clear()
                         comparisonLineChart.clear()
                         deadlinesContainer.removeAllViews()
-                        progressOverTimeLineChart.visibility = View.GONE
-                        barChart.visibility = View.GONE
+                        milestoneProgressLineChart.visibility = View.GONE
+                        statusBarChart.visibility = View.GONE
                         comparisonLineChart.visibility = View.GONE
                     }
 
@@ -256,40 +256,30 @@ class StudentDashboardActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupProgressOverTimeLineChart(timestamps: Map<String, String>, startDateString: String?, projectType: String) {
-        if (timestamps.isEmpty() || startDateString == null) {
-            progressOverTimeLineChart.visibility = View.GONE
+    private fun setupMilestoneProgressTimelineChart(timestamps: Map<String, String>) {
+        if (timestamps.isEmpty()) {
+            milestoneProgressLineChart.visibility = View.GONE
             return
         }
-        progressOverTimeLineChart.visibility = View.VISIBLE
+        milestoneProgressLineChart.visibility = View.VISIBLE
 
         val entries = ArrayList<Entry>()
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val startDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
-        val projectStartDate = try {
-            startDateFormat.parse(startDateString)
-        } catch (e: Exception) {
-            null
-        } ?: return // Exit if start date is invalid
+        val milestoneTitles = if (projectTypeTextView.text.toString().contains("App")) appMilestoneTitles else productMilestoneTitles
+        val labels = ArrayList<String>()
 
         val sortedTimestamps = timestamps.entries.sortedBy { it.key.toInt() }
 
-        // Add a starting point at day 0 with 0 milestones completed
-        entries.add(Entry(0f, 0f))
-
-        sortedTimestamps.forEachIndexed { index, entry ->
-            val timestampDate = dateFormat.parse(entry.value)
-            val daysElapsed = if (timestampDate != null) {
-                ((timestampDate.time - projectStartDate.time) / (1000 * 60 * 60 * 24)).toFloat()
-            } else {
-                0f
-            }
-            val milestonesCompleted = (index + 1).toFloat()
-            entries.add(Entry(daysElapsed, milestonesCompleted))
+        sortedTimestamps.forEach { entry ->
+            val milestoneIndex = entry.key.toInt()
+            val progressPercent = ((milestoneIndex + 1).toFloat() / milestoneTitles.size) * 100
+            entries.add(Entry(milestoneIndex.toFloat(), progressPercent))
         }
 
-        val dataSet = LineDataSet(entries, "Progress Over Time").apply {
+        for (i in milestoneTitles.indices) {
+            labels.add("M${i}")
+        }
+
+        val dataSet = LineDataSet(entries, "Progress %").apply {
             color = ContextCompat.getColor(this@StudentDashboardActivity, R.color.colorPrimary)
             valueTextColor = Color.BLACK
             lineWidth = 2f
@@ -300,41 +290,40 @@ class StudentDashboardActivity : AppCompatActivity() {
         }
 
         val lineData = LineData(dataSet)
-        progressOverTimeLineChart.data = lineData
-        progressOverTimeLineChart.description.isEnabled = false
-        progressOverTimeLineChart.setTouchEnabled(true)
-        progressOverTimeLineChart.setPinchZoom(true)
-        progressOverTimeLineChart.animateY(1000)
+        milestoneProgressLineChart.data = lineData
+        milestoneProgressLineChart.description.isEnabled = false
+        milestoneProgressLineChart.setTouchEnabled(true)
+        milestoneProgressLineChart.setPinchZoom(true)
+        milestoneProgressLineChart.animateY(1000)
 
         // Customize X-axis
-        val xAxis = progressOverTimeLineChart.xAxis
+        val xAxis = milestoneProgressLineChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
         xAxis.textColor = Color.BLACK
         xAxis.setAvoidFirstLastClipping(true)
-        xAxis.valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
-            override fun getFormattedValue(value: Float): String {
-                return "${value.toInt()} Days"
-            }
-        }
-        xAxis.axisMinimum = 0f
+        xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+        xAxis.axisMinimum = -0.5f
+        xAxis.axisMaximum = (labels.size - 0.5f).toFloat()
 
         // Customize Y-axis
-        val leftAxis = progressOverTimeLineChart.axisLeft
+        val leftAxis = milestoneProgressLineChart.axisLeft
         leftAxis.granularity = 1f
         leftAxis.axisMinimum = 0f
+        leftAxis.axisMaximum = 100f
         leftAxis.textColor = Color.BLACK
         leftAxis.valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                return "${value.toInt()}"
+                return "${value.toInt()}%"
             }
         }
+        leftAxis.setDrawGridLines(false)
 
-        val rightAxis = progressOverTimeLineChart.axisRight
+        val rightAxis = milestoneProgressLineChart.axisRight
         rightAxis.isEnabled = false
 
-        progressOverTimeLineChart.invalidate()
+        milestoneProgressLineChart.invalidate()
     }
 
     private fun setupComparisonLineChart(studentProgress: Map<String, String>, allStudentsProgress: Map<String, Int>, projectType: String, totalStudents: Int) {
@@ -393,7 +382,7 @@ class StudentDashboardActivity : AppCompatActivity() {
         comparisonLineChart.setPinchZoom(true)
         comparisonLineChart.animateY(1000)
 
-        val labels = milestoneTitles.map { it.split(" ").first() }
+        val labels = milestoneTitles.map { "M${milestoneTitles.indexOf(it)}" }
 
         val xAxis = comparisonLineChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -431,10 +420,10 @@ class StudentDashboardActivity : AppCompatActivity() {
 
     private fun setupBarChart(counts: Map<String, Int>) {
         if (counts.isEmpty()) {
-            barChart.visibility = View.GONE
+            statusBarChart.visibility = View.GONE
             return
         }
-        barChart.visibility = View.VISIBLE
+        statusBarChart.visibility = View.VISIBLE
 
         val barEntries = ArrayList<BarEntry>()
         val labels = ArrayList<String>()
@@ -459,26 +448,26 @@ class StudentDashboardActivity : AppCompatActivity() {
         }
 
         val barData = BarData(dataSet)
-        barChart.data = barData
-        barChart.description.isEnabled = false
-        barChart.animateY(600)
-        barChart.setFitBars(true)
+        statusBarChart.data = barData
+        statusBarChart.description.isEnabled = false
+        statusBarChart.animateY(600)
+        statusBarChart.setFitBars(true)
 
-        val xAxis = barChart.xAxis
+        val xAxis = statusBarChart.xAxis
         xAxis.valueFormatter = IndexAxisValueFormatter(labels)
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
         xAxis.textColor = Color.BLACK
 
-        val leftAxis = barChart.axisLeft
+        val leftAxis = statusBarChart.axisLeft
         leftAxis.granularity = 1f
         leftAxis.axisMinimum = 0f
         leftAxis.textColor = Color.BLACK
         leftAxis.setDrawGridLines(false)
 
-        barChart.axisRight.isEnabled = false
+        statusBarChart.axisRight.isEnabled = false
 
-        barChart.invalidate()
+        statusBarChart.invalidate()
     }
 }

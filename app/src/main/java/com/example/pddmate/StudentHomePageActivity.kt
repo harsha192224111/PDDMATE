@@ -20,8 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Body
 import retrofit2.http.POST
 import java.util.*
 
@@ -37,12 +36,13 @@ class StudentHomePageActivity : AppCompatActivity() {
 
     data class EnrollmentResponse(
         val success: Boolean,
-        @SerializedName("project_id") val projectId: Int?
+        @SerializedName("project_id") val projectId: Int?,
+        @SerializedName("project_type") val projectType: String?
     )
     interface EnrollmentApiService {
-        @FormUrlEncoded
+        // Change from @FormUrlEncoded and @Field to @Body for a JSON POST request
         @POST("get_student_enrollment.php")
-        fun getStudentEnrollment(@Field("user_id") userId: String): Call<EnrollmentResponse>
+        fun getStudentEnrollment(@Body body: Map<String, String>): Call<EnrollmentResponse>
     }
     private lateinit var enrollmentApiService: EnrollmentApiService
 
@@ -123,12 +123,16 @@ class StudentHomePageActivity : AppCompatActivity() {
             return
         }
 
-        enrollmentApiService.getStudentEnrollment(userId).enqueue(object : Callback<EnrollmentResponse> {
+        // Create the request body as a Map
+        val requestBody = mapOf("user_id" to userId)
+
+        enrollmentApiService.getStudentEnrollment(requestBody).enqueue(object : Callback<EnrollmentResponse> {
             override fun onResponse(call: Call<EnrollmentResponse>, response: Response<EnrollmentResponse>) {
                 if (response.isSuccessful) {
                     val body = response.body()
-                    if (body?.success == true && body.projectId != null) {
-                        launchProjectMilestones(body.projectId, userId)
+                    val slotType = body?.projectType?.uppercase() // always normalize to uppercase
+                    if (body?.success == true && body.projectId != null && !slotType.isNullOrEmpty()) {
+                        launchProjectMilestones(body.projectId, userId, slotType)
                     } else {
                         Toast.makeText(this@StudentHomePageActivity, "No approved project found. Please enroll.", Toast.LENGTH_LONG).show()
                         startActivity(Intent(this@StudentHomePageActivity, SlotEnrollmentActivity::class.java))
@@ -148,27 +152,21 @@ class StudentHomePageActivity : AppCompatActivity() {
         })
     }
 
-    private fun launchProjectMilestones(projectId: Int, userId: String) {
-        // Correct: Use PDDMATE_PREFS and fetch student_slot as stored
-        val sharedPref = getSharedPreferences("PDDMATE_PREFS", MODE_PRIVATE)
-        val studentSlot = sharedPref.getString("student_slot", "")
-
-        // "APP_DEVELOPMENT" -> ProjectMilestoneAppActivity, "PRODUCT_DEVELOPMENT" -> ProjectMilestoneProductActivity
+    private fun launchProjectMilestones(projectId: Int, userId: String, studentSlot: String) {
         when (studentSlot) {
-            "APP_DEVELOPMENT" -> {
+            "APP" -> {
                 val intent = Intent(this, ProjectMilestoneAppActivity::class.java)
                 intent.putExtra("USER_ID", userId)
                 intent.putExtra("PROJECT_ID", projectId)
                 startActivity(intent)
             }
-            "PRODUCT_DEVELOPMENT" -> {
+            "PRODUCT" -> {
                 val intent = Intent(this, ProjectMilestoneProductActivity::class.java)
                 intent.putExtra("USER_ID", userId)
                 intent.putExtra("PROJECT_ID", projectId)
                 startActivity(intent)
             }
             else -> {
-                // If slot is not set, go to enrollment
                 startActivity(Intent(this, SlotEnrollmentActivity::class.java))
             }
         }

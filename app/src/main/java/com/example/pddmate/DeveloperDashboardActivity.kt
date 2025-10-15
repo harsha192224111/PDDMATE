@@ -39,10 +39,10 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import android.view.Gravity
 import com.google.gson.annotations.SerializedName
-import kotlin.collections.ArrayList
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import java.text.DecimalFormat
+import java.util.Locale
 
 class DeveloperDashboardActivity : AppCompatActivity() {
 
@@ -52,17 +52,18 @@ class DeveloperDashboardActivity : AppCompatActivity() {
     private lateinit var pendingReviewsLayout: LinearLayout
     private lateinit var submissionsPieChart: PieChart
     private lateinit var enrollmentsBarChart: BarChart
-    private lateinit var appProductProgressBarChart: BarChart // Stacked bar chart for App vs Product
+    private lateinit var appProductProgressBarChart: BarChart
     private lateinit var studentProgressBarChart: BarChart
-    private lateinit var avgTimeLineChart: LineChart
+    private lateinit var milestoneCompletionStackedBarChart: BarChart
+    // Removed: private lateinit var avgTimeLineChart: LineChart
+    // Removed: private lateinit var rejectedPhasesBarChart: BarChart
 
     private lateinit var apiService: ApiService
     private var userId: String? = null
 
-    // Milestone titles are used to determine total possible milestones for the stacked bar chart
     private val appMilestoneTitles = listOf(
         "Idea Selection", "UI/UX Design", "Frontend Development",
-        "Backend Integration", "Testing & Debugging", "Deployment & Maintenance"
+        "Backend Integration", "Testing & Debugbing", "Deployment & Maintenance"
     )
     private val productMilestoneTitles = listOf(
         "Idea Selection", "Modelling", "Prototype",
@@ -70,7 +71,21 @@ class DeveloperDashboardActivity : AppCompatActivity() {
     )
     private var projectTypes: Map<Int, String> = emptyMap()
 
-    // Data Models (using camelCase for Kotlin and @SerializedName for PHP snake_case)
+    // Add this new data class
+    data class MilestoneCompletionOverviewData(
+        @SerializedName("project_title") val projectTitle: String,
+        val milestones: List<MilestoneStatusData>
+    )
+
+    // Add this new data class for the milestone status
+    data class MilestoneStatusData(
+        val accepted: Int,
+        val pending: Int,
+        val rejected: Int,
+        @SerializedName("not_submitted") val notSubmitted: Int
+    )
+
+    // Update the DeveloperDashboardResponse data class
     data class DeveloperDashboardResponse(
         val success: Boolean,
         val message: String,
@@ -79,8 +94,10 @@ class DeveloperDashboardActivity : AppCompatActivity() {
         @SerializedName("submission_counts") val submissionCounts: Map<String, Int>,
         @SerializedName("enrollment_counts") val enrollmentCounts: Map<String, Int>,
         @SerializedName("student_progress_data") val studentProgressData: List<StudentProgressData>,
-        @SerializedName("app_product_progress") val appProductProgress: List<AppProductProgressData>, // New data model
-        @SerializedName("avg_time_per_milestone") val avgTimePerMilestone: List<Double>
+        @SerializedName("app_product_progress") val appProductProgress: List<AppProductProgressData>,
+        @SerializedName("avg_time_per_milestone") val avgTimePerMilestone: List<Double>,
+        @SerializedName("milestone_completion_overview") val milestoneCompletionOverview: List<MilestoneCompletionOverviewData>,
+        @SerializedName("rejected_phases_trend") val rejectedPhasesTrend: List<RejectedPhasesData>
     )
 
     data class ProjectData(
@@ -102,14 +119,17 @@ class DeveloperDashboardActivity : AppCompatActivity() {
         @SerializedName("completed_milestones") val completedMilestones: Int
     )
 
-    // Data model for the new stacked bar chart
     data class AppProductProgressData(
         val type: String,
         @SerializedName("total_students") val totalStudents: Int,
-        @SerializedName("milestones_completed") val milestonesCompleted: Int
+        @SerializedName("accepted_milestones") val acceptedMilestones: Int
     )
 
-    // Retrofit Interface
+    data class RejectedPhasesData(
+        @SerializedName("milestone_index") val milestoneIndex: Int,
+        @SerializedName("rejection_count") val rejectionCount: Int
+    )
+
     interface ApiService {
         @FormUrlEncoded
         @POST("get_developer_dashboard_data.php")
@@ -120,7 +140,6 @@ class DeveloperDashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_developer_dashboard)
 
-        // Initialize views
         developerNameTextView = findViewById(R.id.developer_name_text_view)
         totalProjectsTextView = findViewById(R.id.total_projects_text_view)
         totalPendingReviewsTextView = findViewById(R.id.total_pending_reviews_text_view)
@@ -128,12 +147,12 @@ class DeveloperDashboardActivity : AppCompatActivity() {
         submissionsPieChart = findViewById(R.id.submissions_pie_chart)
         enrollmentsBarChart = findViewById(R.id.enrollments_bar_chart)
         studentProgressBarChart = findViewById(R.id.student_progress_bar_chart)
-        appProductProgressBarChart = findViewById(R.id.app_product_progress_bar_chart) // Initialize new chart
-        avgTimeLineChart = findViewById(R.id.avg_time_line_chart)
+        appProductProgressBarChart = findViewById(R.id.app_product_progress_bar_chart)
+        milestoneCompletionStackedBarChart = findViewById(R.id.milestone_completion_stacked_bar_chart)
+        // Removed initializations for avgTimeLineChart and rejectedPhasesBarChart
 
         userId = intent.getStringExtra("USER_ID") ?: getSharedPreferences("login_session", Context.MODE_PRIVATE).getString("user_id", null)
 
-        // Set up Retrofit
         val gson = GsonBuilder().setLenient().create()
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.249.231.64/pdd_dashboard/")
@@ -166,15 +185,15 @@ class DeveloperDashboardActivity : AppCompatActivity() {
                         totalProjectsTextView.text = data.projects.size.toString()
                         totalPendingReviewsTextView.text = data.pendingReviews.size.toString()
 
-                        // Populate the project types map
                         projectTypes = data.projects.associate { it.projectId to it.type }
 
                         updatePendingReviewsUI(data.pendingReviews)
                         setupSubmissionsPieChart(data.submissionCounts)
                         setupEnrollmentsBarChart(data.enrollmentCounts)
-                        setupAppProductProgressBarChart(data.appProductProgress) // Call new function
+                        setupAppProductProgressBarChart(data.appProductProgress)
                         setupStudentProgressBarChart(data.studentProgressData)
-                        setupAvgTimeLineChart(data.avgTimePerMilestone)
+                        setupMilestoneCompletionStackedBarChart(data.milestoneCompletionOverview)
+                        // Removed calls to setupAvgTimeLineChart and setupRejectedPhasesBarChart
                     }
                 } else {
                     Log.e("DevDashboard", "Failed to load: ${response.body()?.message ?: "Unknown API error"}")
@@ -184,7 +203,6 @@ class DeveloperDashboardActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<DeveloperDashboardResponse>, t: Throwable) {
                 Log.e("DevDashboard", "Network error: ${t.message}", t)
-                // A better message for the user that doesn't expose raw error
                 val displayMessage = when {
                     t.message?.contains("EHOSTUNREACH") == true -> "Network connection failed. Please check your Wi-Fi and try again."
                     else -> getString(R.string.network_error, t.message)
@@ -257,10 +275,10 @@ class DeveloperDashboardActivity : AppCompatActivity() {
         }
         submissionsPieChart.visibility = View.VISIBLE
         val dataSet = PieDataSet(entries, "").apply {
-            this.colors = colors
+            setColors(colors)
             sliceSpace = 3f
             valueTextSize = 12f
-            setDrawValues(true) // Ensure values are drawn
+            setDrawValues(true)
             valueTextColor = Color.BLACK
         }
 
@@ -297,7 +315,7 @@ class DeveloperDashboardActivity : AppCompatActivity() {
         }
 
         val dataSet = BarDataSet(entries, "Enrollment Status").apply {
-            this.colors = colors
+            setColors(colors)
             valueTextSize = 12f
             setDrawValues(true)
             valueTextColor = Color.BLACK
@@ -314,6 +332,9 @@ class DeveloperDashboardActivity : AppCompatActivity() {
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
         xAxis.setCenterAxisLabels(true)
+        // Correcting alignment by setting axis min/max
+        xAxis.axisMinimum = -0.5f
+        xAxis.axisMaximum = labels.size.toFloat() - 0.5f
 
         val leftAxis = enrollmentsBarChart.axisLeft
         leftAxis.axisMinimum = 0f
@@ -324,7 +345,6 @@ class DeveloperDashboardActivity : AppCompatActivity() {
         enrollmentsBarChart.invalidate()
     }
 
-    // Function to set up the new stacked bar chart
     private fun setupAppProductProgressBarChart(progressData: List<AppProductProgressData>) {
         if (progressData.isEmpty()) {
             appProductProgressBarChart.visibility = View.GONE
@@ -335,70 +355,68 @@ class DeveloperDashboardActivity : AppCompatActivity() {
         val appData = progressData.find { it.type == "App" }
         val productData = progressData.find { it.type == "Product" }
 
-        // Data for App projects
-        val appStudents = appData?.totalStudents ?: 0
-        val appMilestonesCompleted = appData?.milestonesCompleted?.toFloat() ?: 0f
-        // Total possible milestones = Total Students * Milestones per project (6)
-        val appTotalPossibleMilestones = appStudents * appMilestoneTitles.size.toFloat()
-        val appMilestonesRemaining = if (appTotalPossibleMilestones > appMilestonesCompleted) appTotalPossibleMilestones - appMilestonesCompleted else 0f
+        val labels = ArrayList<String>()
+        val entries = ArrayList<BarEntry>()
 
-        // Data for Product projects
-        val productStudents = productData?.totalStudents ?: 0
-        val productMilestonesCompleted = productData?.milestonesCompleted?.toFloat() ?: 0f
-        // Total possible milestones = Total Students * Milestones per project (6)
-        val productTotalPossibleMilestones = productStudents * productMilestoneTitles.size.toFloat()
-        val productMilestonesRemaining = if (productTotalPossibleMilestones > productMilestonesCompleted) productTotalPossibleMilestones - productMilestonesCompleted else 0f
-
-        // Create entries for the stacked bars
-        // The inner array represents the stack: [completed, remaining]
-        val entries = ArrayList<BarEntry>().apply {
-            add(BarEntry(0f, floatArrayOf(appMilestonesCompleted, appMilestonesRemaining)))
-            add(BarEntry(1f, floatArrayOf(productMilestonesCompleted, productMilestonesRemaining)))
+        if (appData != null && appData.totalStudents > 0) {
+            val appAvgProgress = (appData.acceptedMilestones.toFloat() / (appData.totalStudents.toFloat() * appMilestoneTitles.size.toFloat())) * 100
+            entries.add(BarEntry(0f, appAvgProgress))
+            labels.add("App")
         }
 
-        val labels = listOf("App Projects (Total Students: $appStudents)", "Product Projects (Total Students: $productStudents)")
+        if (productData != null && productData.totalStudents > 0) {
+            val productAvgProgress = (productData.acceptedMilestones.toFloat() / (productData.totalStudents.toFloat() * productMilestoneTitles.size.toFloat())) * 100
+            entries.add(BarEntry(1f, productAvgProgress))
+            labels.add("Product")
+        }
 
-        val dataSet = BarDataSet(entries, "").apply {
-            colors = listOf(
-                ContextCompat.getColor(this@DeveloperDashboardActivity, R.color.success_green),
-                ContextCompat.getColor(this@DeveloperDashboardActivity, R.color.rejected_red)
-            )
-            stackLabels = arrayOf("Completed Milestones", "Remaining Milestones")
-            valueTextColor = Color.BLACK
-            valueTextSize = 10f
+        if (entries.isEmpty()) {
+            appProductProgressBarChart.visibility = View.GONE
+            return
+        }
+
+        val dataSet = BarDataSet(entries, "Average Progress %").apply {
+            setColor(ContextCompat.getColor(this@DeveloperDashboardActivity, R.color.colorPrimary))
+            valueTextSize = 12f
             setDrawValues(true)
+            valueTextColor = Color.BLACK
+            valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return String.format(Locale.getDefault(), "%.1f%%", value)
+                }
+            }
         }
 
-        val dataSets = ArrayList<IBarDataSet>()
-        dataSets.add(dataSet)
-
-        val data = BarData(dataSets)
-        data.barWidth = 0.8f
+        val data = BarData(dataSet)
         appProductProgressBarChart.data = data
         appProductProgressBarChart.description.isEnabled = false
         appProductProgressBarChart.animateY(1000)
-        appProductProgressBarChart.legend.isWordWrapEnabled = true
+        appProductProgressBarChart.setFitBars(true)
 
-        // Customize X-Axis
         val xAxis = appProductProgressBarChart.xAxis
         xAxis.valueFormatter = IndexAxisValueFormatter(labels)
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
         xAxis.setCenterAxisLabels(true)
-        xAxis.textSize = 10f // Smaller font for longer labels
+        // Correcting alignment by setting axis min/max
+        xAxis.axisMinimum = -0.5f
+        xAxis.axisMaximum = labels.size.toFloat() - 0.5f
 
-        // Customize Y-Axis
         val leftAxis = appProductProgressBarChart.axisLeft
         leftAxis.axisMinimum = 0f
-        leftAxis.granularity = 1f
+        leftAxis.axisMaximum = 100f
+        leftAxis.granularity = 10f
         leftAxis.setDrawGridLines(false)
-        leftAxis.setDrawZeroLine(true)
+        leftAxis.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return "${value.toInt()}%"
+            }
+        }
 
         appProductProgressBarChart.axisRight.isEnabled = false
         appProductProgressBarChart.invalidate()
     }
-
 
     private fun setupStudentProgressBarChart(progressData: List<StudentProgressData>) {
         if (progressData.isEmpty()) {
@@ -415,7 +433,7 @@ class DeveloperDashboardActivity : AppCompatActivity() {
         }
 
         val dataSet = BarDataSet(entries, "Completed Milestones").apply {
-            color = ContextCompat.getColor(this@DeveloperDashboardActivity, R.color.colorPrimary)
+            setColor(ContextCompat.getColor(this@DeveloperDashboardActivity, R.color.colorPrimary))
             valueTextSize = 12f
             setDrawValues(true)
             valueTextColor = Color.BLACK
@@ -442,61 +460,58 @@ class DeveloperDashboardActivity : AppCompatActivity() {
         studentProgressBarChart.invalidate()
     }
 
-    // Function to set up the average time line chart with corrected data calculation
-    private fun setupAvgTimeLineChart(avgTimes: List<Double>) {
-        if (avgTimes.isEmpty() || avgTimes.all { it == 0.0 }) {
-            avgTimeLineChart.visibility = View.GONE
+    private fun setupMilestoneCompletionStackedBarChart(data: List<MilestoneCompletionOverviewData>) {
+        if (data.isEmpty()) {
+            milestoneCompletionStackedBarChart.visibility = View.GONE
             return
         }
-        avgTimeLineChart.visibility = View.VISIBLE
-        val entries = ArrayList<Entry>()
-        val labels = ArrayList<String>()
+        milestoneCompletionStackedBarChart.visibility = View.VISIBLE
 
-        // avgTimes is a numeric array; index corresponds to milestone index
-        avgTimes.forEachIndexed { idx, days ->
-            entries.add(Entry(idx.toFloat(), days.toFloat()))
-            // Neutral label: M0, M1, M2, ...
-            labels.add("M${idx}")
+        val projectTitles = data.map { it.projectTitle }
+        val entries = ArrayList<BarEntry>()
+
+        data.forEachIndexed { projectIndex, projectData ->
+            val milestoneStatuses = projectData.milestones
+            val acceptedCount = milestoneStatuses.sumOf { it.accepted }.toFloat()
+            val pendingCount = milestoneStatuses.sumOf { it.pending }.toFloat()
+            val rejectedCount = milestoneStatuses.sumOf { it.rejected }.toFloat()
+            val notSubmittedCount = milestoneStatuses.sumOf { it.notSubmitted }.toFloat()
+
+            entries.add(BarEntry(projectIndex.toFloat(), floatArrayOf(acceptedCount, pendingCount, rejectedCount, notSubmittedCount)))
         }
 
-        val dataSet = LineDataSet(entries, "Average Days to Complete Milestone").apply {
-            color = ContextCompat.getColor(this@DeveloperDashboardActivity, R.color.colorPrimaryDark)
+        val dataSet = BarDataSet(entries, "Milestone Status").apply {
+            setColors(listOf(
+                ContextCompat.getColor(this@DeveloperDashboardActivity, R.color.success_green),
+                ContextCompat.getColor(this@DeveloperDashboardActivity, R.color.pending_yellow),
+                ContextCompat.getColor(this@DeveloperDashboardActivity, R.color.rejected_red),
+                ContextCompat.getColor(this@DeveloperDashboardActivity, R.color.text_light)
+            ))
+            stackLabels = arrayOf("Accepted", "Pending", "Rejected", "Not Submitted")
             valueTextColor = Color.BLACK
-            valueTextSize = 12f
-            lineWidth = 2f
-            circleRadius = 5f
-            circleColors = listOf(ContextCompat.getColor(this@DeveloperDashboardActivity, R.color.colorPrimary))
-            setDrawFilled(true)
-            fillDrawable = ContextCompat.getDrawable(this@DeveloperDashboardActivity, R.drawable.chart_fill_gradient)
+            setDrawValues(true)
         }
 
-        // Format values to one decimal place (e.g., 5.3 days)
-        dataSet.valueFormatter = object : ValueFormatter() {
-            private val format = DecimalFormat("###,##0.0")
-            override fun getFormattedValue(value: Float): String {
-                return format.format(value.toDouble())
-            }
-        }
+        val barData = BarData(dataSet)
+        milestoneCompletionStackedBarChart.data = barData
+        milestoneCompletionStackedBarChart.description.isEnabled = false
+        milestoneCompletionStackedBarChart.animateY(1000)
+        milestoneCompletionStackedBarChart.legend.isWordWrapEnabled = true
+        milestoneCompletionStackedBarChart.setFitBars(true)
 
-        val data = LineData(dataSet)
-        avgTimeLineChart.data = data
-        avgTimeLineChart.description.isEnabled = false
-        avgTimeLineChart.animateY(1000)
-
-        val xAxis = avgTimeLineChart.xAxis
-        xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+        val xAxis = milestoneCompletionStackedBarChart.xAxis
+        xAxis.valueFormatter = IndexAxisValueFormatter(projectTitles)
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
-        xAxis.labelRotationAngle = 0f // Keep labels flat for M0, M1, M2
+        xAxis.labelRotationAngle = 45f
 
-        val leftAxis = avgTimeLineChart.axisLeft
+        val leftAxis = milestoneCompletionStackedBarChart.axisLeft
         leftAxis.axisMinimum = 0f
         leftAxis.granularity = 1f
         leftAxis.setDrawGridLines(false)
-        leftAxis.setDrawZeroLine(true)
 
-        avgTimeLineChart.axisRight.isEnabled = false
-        avgTimeLineChart.invalidate()
+        milestoneCompletionStackedBarChart.axisRight.isEnabled = false
+        milestoneCompletionStackedBarChart.invalidate()
     }
 }

@@ -50,7 +50,6 @@ class SlotEnrollmentActivity : AppCompatActivity() {
     }
 
     private fun loadSlotsForEnrollment() {
-        // Use GsonBuilder to allow lenient JSON parsing
         val gson = GsonBuilder().setLenient().create()
         val client = OkHttpClient.Builder()
             .addInterceptor { chain ->
@@ -78,7 +77,6 @@ class SlotEnrollmentActivity : AppCompatActivity() {
                 response.use { res ->
                     val responseBody = res.body?.string() ?: return
 
-                    // Attempt to parse JSON response string
                     try {
                         val json = JSONObject(responseBody)
                         if (json.optBoolean("success")) {
@@ -173,14 +171,11 @@ class SlotEnrollmentActivity : AppCompatActivity() {
                             adapter.notifyDataSetChanged()
                             alreadyEnrolled = true
                             adapter.setSingleEnrollment(true)
-                            val sharedPref = getSharedPreferences("PDDMATE_PREFS", Context.MODE_PRIVATE)
+                            val sharedPref = getSharedPreferences("login_session", Context.MODE_PRIVATE)
                             with(sharedPref.edit()) {
-                                if (slot.type.equals("App", ignoreCase = true)) {
-                                    putString("student_slot", "APP_DEVELOPMENT")
-                                } else if (slot.type.equals("Product", ignoreCase = true)) {
-                                    putString("student_slot", "PRODUCT_DEVELOPMENT")
-                                }
-                                apply() // Changed from commit() to apply()
+                                // Store type as UPPERCASE
+                                putString("student_slot", slot.type.uppercase())
+                                apply()
                             }
                         }
                     }

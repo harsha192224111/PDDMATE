@@ -113,11 +113,29 @@
     <color name="colorPrimaryLight">#B39DDB</color>
 
     <color name="teal_700">#018786</color>
+    <color name="milestone_files">#4CAF50</color>
+    <color name="project_files">#2196F3</color>
 
     <color name="table_header_bg">#EEEEEE</color>
 
-    <color name="app_blue">#1976D2</color>
-    <color name="product_orange">#FB8C00</color>
+
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+
+
+    <color name="app_blue">#2196F3</color>
+    <color name="product_orange">#FF9800</color>
+
+
+
+    <color name="project_utilization_bar">#9C27B0</color>
+    <color name="developer_perf_bar">#00BCD4</color>
+    <color name="lagging_students_bar">#FF5722</color>
+    <color name="completion_time_bar">#673AB7</color>
+    <color name="top_projects_bar">#8BC34A</color>
+    <color name="funnel_step">#03A9F4</color>
 
 
 

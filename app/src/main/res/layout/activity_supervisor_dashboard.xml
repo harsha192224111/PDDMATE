@@ -76,20 +76,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/enrollment_trends_title"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_dark"
-            android:layout_marginTop="16dp"/>
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/enrollment_trends_chart"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginVertical="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/app_product_enrollment_title"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -104,13 +90,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/milestone_performance_title"
+            android:text="@string/submission_status_breakdown"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/text_dark"
             android:layout_marginTop="16dp"/>
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/milestone_performance_chart"
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/submission_status_chart"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_marginVertical="8dp" />
@@ -118,13 +104,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/submission_status_title"
+            android:text="@string/phase_performance_title"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/text_dark"
             android:layout_marginTop="16dp"/>
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/success_rate_chart"
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/phase_performance_chart"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_marginVertical="8dp" />
@@ -146,13 +132,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_product_completion_title"
+            android:text="@string/milestone_completion_overview_title"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/text_dark"
             android:layout_marginTop="16dp"/>
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/app_product_completion_chart"
+            android:id="@+id/milestone_completion_overview_chart"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_marginVertical="8dp" />
@@ -160,13 +146,27 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_product_approval_title"
+            android:text="@string/project_capacity_utilization"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/text_dark"
             android:layout_marginTop="16dp"/>
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/app_product_approval_chart"
+            android:id="@+id/project_capacity_chart"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginVertical="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/student_performance_progress_title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_dark"
+            android:layout_marginTop="16dp"/>
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/lagging_students_chart"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_marginVertical="8dp" />

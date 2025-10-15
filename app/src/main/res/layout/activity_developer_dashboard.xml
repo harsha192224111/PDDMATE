@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -31,178 +32,195 @@
             android:textColor="@color/text_light"
             android:layout_marginBottom="24dp"/>
 
-        <GridLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:rowCount="1"
-            android:columnCount="2"
-            android:alignmentMode="alignMargins"
-            android:columnOrderPreserved="false">
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="8dp"
-                android:layout_margin="8dp"
-                app:cardBackgroundColor="@color/colorPrimary">
-
+                app:cardElevation="8dp">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="16dp">
-
+                    android:padding="16dp"
+                    android:gravity="center">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/total_projects"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-
+                        android:textSize="14sp"
+                        android:textColor="@color/text_light" />
                     <TextView
                         android:id="@+id/total_projects_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/value_0"
-                        android:textColor="@color/white"
+                        android:text="@string/hardcoded_zero"
                         android:textSize="32sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="8dp"
-                android:layout_margin="8dp"
-                app:cardBackgroundColor="@color/pending_yellow">
-
+                app:cardElevation="8dp">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="16dp">
-
+                    android:padding="16dp"
+                    android:gravity="center">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pending_reviews"
-                        android:textColor="@color/text_dark"
-                        android:textSize="16sp" />
-
+                        android:textSize="14sp"
+                        android:textColor="@color/text_light"
+                        android:gravity="center"/>
                     <TextView
                         android:id="@+id/total_pending_reviews_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/value_0"
-                        android:textColor="@color/text_dark"
+                        android:text="@string/hardcoded_zero"
                         android:textSize="32sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/rejected_red" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-        </GridLayout>
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/submissions_status"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_dark"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/submissions_pie_chart"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginVertical="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/enrollment_status"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_dark"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/enrollments_bar_chart"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginVertical="8dp" />
-
-        <!-- New Stacked Bar Chart for App vs Product Progress -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_vs_product_progress"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_dark"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/app_product_progress_bar_chart"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginVertical="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/student_progress_comparison"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_dark"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/student_progress_bar_chart"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginVertical="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/avg_time_per_milestone"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_dark"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/avg_time_line_chart"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginVertical="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/milestones_for_review"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_dark"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
-
-        <LinearLayout
-            android:id="@+id/pending_reviews_layout"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            app:cardCornerRadius="12dp"
+            app:cardElevation="8dp"
+            android:layout_marginBottom="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/submissions_status_breakdown"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_dark"
+                    android:layout_marginBottom="8dp"/>
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/submissions_pie_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enrollment_status_breakdown"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_dark"
+                    android:layout_marginTop="16dp" />
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/enrollments_bar_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/milestone_completion_overview"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_dark"
+                    android:layout_marginTop="16dp" />
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/milestone_completion_stacked_bar_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/student_progress_distribution"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_dark"
+                    android:layout_marginTop="16dp"/>
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/student_progress_bar_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"/>
+
+                <!-- Removed: Rejected Phases Trend -->
+                <!-- Removed: Avg Time to Approve Submissions Chart -->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_product_comparison"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_dark"
+                    android:layout_marginTop="16dp"/>
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/app_product_progress_bar_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Pending Reviews Queue Card (MOVED TO LAST) -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="8dp"
+            android:layout_marginBottom="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pending_reviews_queue"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_dark"
+                    android:layout_marginBottom="8dp"/>
+                <LinearLayout
+                    android:id="@+id/pending_reviews_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 </ScrollView>
