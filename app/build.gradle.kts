@@ -4,12 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.pddmate"
-    // Using a recent, stable API level
+    namespace = "com.simats.pddmate"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.pddmate"
+        applicationId = "com.simats.pddmate"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -28,7 +27,6 @@ android {
     }
 
     compileOptions {
-        // Standardizing on Java 17 for better performance and support
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -58,11 +56,16 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
-    // Charting Library (MPAndroidChart) - This will now resolve correctly after settings.gradle change
+    // Google Play Billing Library - This is the key addition
+    implementation("com.android.billingclient:billing-ktx:6.1.0")
+
+    // Charting Library (MPAndroidChart)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // Testing Dependencies
-    testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 }

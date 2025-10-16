@@ -9,6 +9,8 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
+    <uses-permission android:name="com.android.vending.BILLING" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -112,7 +114,10 @@
             android:exported="false" />
         <activity
             android:name=".VerifyFileUploadsActivity"
-            android:exported="false" /> <!-- <activity android:name=".VerifyMilestoneDetailActivity" /> -->
+            android:exported="false" />
+        <activity
+            android:name=".SubscriptionActivity"
+            android:exported="false" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
